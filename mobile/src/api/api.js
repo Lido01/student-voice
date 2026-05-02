@@ -1,5 +1,17 @@
-// IMPORTANT: Set this to your computer's LAN IP, e.g. 'http://192.168.1.42:8000/api'
+// IMPORTANT: Set this to your computer's LAN IP
 const BASE_URL = 'http://10.240.41.31:8000/api';
+
+/**
+ * Helper to handle fetch responses and ensure status is included
+ */
+async function handleResponse(response) {
+  try {
+    const data = await response.json();
+    return { status: response.status, ...(Array.isArray(data) ? { data } : data) };
+  } catch (e) {
+    return { status: response.status, detail: "JSON parse error" };
+  }
+}
 
 export async function login(username, password) {
   const response = await fetch(`${BASE_URL}/account/login/`, {
@@ -7,8 +19,7 @@ export async function login(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
-  const data = await response.json();
-  return { status: response.status, ...data };
+  return handleResponse(response);
 }
 
 export async function register(form) {
@@ -17,26 +28,57 @@ export async function register(form) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(form)
   });
-  const data = await response.json();
-  return { status: response.status, ...data };
+  return handleResponse(response);
 }
 
 export async function getFeedbacks(token) {
   const response = await fetch(`${BASE_URL}/feedbacks/`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
-  const data = await response.json();
-  return { status: response.status, data };
+  return handleResponse(response);
+}
+
+/**
+ * ADMIN/DEPT: Update feedback status and add response
+ * Path: /api/feedbacks/{id}/
+ */
+export async function updateFeedbackStatus(token, id, payload) {
+  const response = await fetch(`${BASE_URL}/feedbacks/${id}/`, {
+    method: 'PATCH', // PATCH is best for partial updates like 'status'
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+  return handleResponse(response);
+}
+
+/**
+ * ADMIN: Delete feedback
+ * Path: /api/feedbacks/{id}/
+ */
+export async function deleteFeedback(token, id) {
+  try {
+    const response = await fetch(`${BASE_URL}/feedbacks/${id}/`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (response.status === 204) return { status: 204, success: true };
+    return handleResponse(response);
+  } catch (error) {
+    return { status: 500, detail: "Network error" };
+  }
 }
 
 export async function submitFeedback(token, feedback) {
   const isFormData = feedback instanceof FormData;
   const headers = {
     'Authorization': `Bearer ${token}`,
-    'Accept': 'application/json', // Add this to tell Django you want JSON back
+    'Accept': 'application/json',
   };
 
-  // ONLY set Content-Type if it's NOT FormData
   if (!isFormData) {
     headers['Content-Type'] = 'application/json';
   }
@@ -47,10 +89,7 @@ export async function submitFeedback(token, feedback) {
       headers: headers,
       body: isFormData ? feedback : JSON.stringify(feedback)
     });
-
-    const data = await response.json();
-    // This ensures that res.status is always available for checking
-    return { ...data, status: response.status };
+    return handleResponse(response);
   } catch (error) {
     console.error("Fetch Error:", error);
     return { status: 500, detail: "Network error" };
@@ -61,8 +100,7 @@ export async function getNotifications(token) {
   const response = await fetch(`${BASE_URL}/notifications/`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
-  const data = await response.json();
-  return { status: response.status, data };
+  return handleResponse(response);
 }
 
 export async function getUsers(token, role) {
@@ -71,6 +109,5 @@ export async function getUsers(token, role) {
   const response = await fetch(url, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
-  const data = await response.json();
-  return { status: response.status, data };
+  return handleResponse(response);
 }
