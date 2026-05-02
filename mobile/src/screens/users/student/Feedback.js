@@ -1,257 +1,226 @@
 import React, { useEffect, useState } from 'react';
 import { 
   View, Text, TextInput, TouchableOpacity, StyleSheet, 
-  FlatList, Alert, Image, ActivityIndicator, Switch, Modal 
+  FlatList, Alert, Image, ActivityIndicator, Switch, Modal, ScrollView 
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
-import Navbar from '../../Navbar';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { getFeedbacks, submitFeedback } from '../../../api/api';
 
-const FeedbackScreen = ({ navigation, route }) => {
-  const { token, user } = route.params || {};
-  
-  // 1. Role Check: Only allow students
-  const isStudent = user?.role === 'student';
-
+const FeedbackScreen = ({ navigation, token, user }) => {
+  const isStudent = user?.role?.toLowerCase() === 'student';
   const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [image, setImage] = useState(null);
-  const [selectedFeedback, setSelectedFeedback] = useState(null); // For Detail Modal
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
   
   const [form, setForm] = useState({ 
     subject: '', 
     description: '', 
     category: 'academic', 
-    target: 'department',
+    target: 'department', // Backend Required: department or student_affair
     anonymous: false 
   });
 
   useEffect(() => {
-    if (isStudent) fetchFeedbacks();
+    if (isStudent && token) fetchHistory();
   }, [token]);
 
-  const fetchFeedbacks = async () => {
-    if (token) {
-      const response = await getFeedbacks(token);
-      if (response.status === 200) {
-        setFeedbacks(response.data);
-      }
-    }
+  const fetchHistory = async () => {
+    const res = await getFeedbacks(token);
+    if (res.status === 200) setFeedbacks(res.data);
   };
 
-  const handleChange = (name, value) => setForm({ ...form, [name]: value });
-
   const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'We need camera roll access to upload photos.');
+      return;
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.7,
+      quality: 0.8,
     });
+
     if (!result.canceled) setImage(result.assets[0].uri);
   };
 
   const handleSubmit = async () => {
     if (!form.subject || !form.description) {
-      Alert.alert('Error', 'Please fill in required fields.');
+      Alert.alert('Missing Info', 'Please provide a subject and description.');
       return;
     }
 
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('subject', form.subject);
-      formData.append('description', form.description);
-      formData.append('category', form.category);
-      formData.append('target', form.target);
-      // Send as boolean string for backend
-      formData.append('anonymous', String(form.anonymous));
+    setSubmitting(true);
+    const formData = new FormData();
+    formData.append('subject', form.subject);
+    formData.append('description', form.description);
+    formData.append('category', form.category);
+    formData.append('target', form.target);
+    formData.append('anonymous', String(form.anonymous));
 
-      if (image) {
-        const filename = image.split('/').pop();
-        const match = /\.(\w+)$/.exec(filename);
-        const type = match ? `image/${match[1]}` : `image`;
-        formData.append('image', { uri: image, name: filename, type });
-      }
+    if (image) {
+      const filename = image.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+      formData.append('image', { uri: image, name: filename, type });
+    }
 
-      const res = await submitFeedback(token, formData);
+    const res = await submitFeedback(token, formData);
+    setSubmitting(false);
 
-      if (res.status === 201 || res.id) {
-        Alert.alert('Success', 'Feedback submitted!');
-        setForm({ subject: '', description: '', category: 'academic', target: 'department', anonymous: false });
-        setImage(null);
-        fetchFeedbacks();
-      } else {
-        Alert.alert('Error', res.detail || "Submission failed.");
-      }
-    } catch (err) {
-      Alert.alert('Error', 'Network error occurred.');
-    } finally {
-      setLoading(false);
+    if (res.id || res.status === 201) {
+      Alert.alert('Success', 'Your feedback has been sent.');
+      setForm({ ...form, subject: '', description: '', anonymous: false });
+      setImage(null);
+      fetchHistory();
+    } else {
+      Alert.alert('Error', res.detail || 'Failed to submit.');
     }
   };
 
-  if (!isStudent) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorText}>Access Denied. Only students can submit feedback.</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={{color: '#fff'}}>Go Back</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'resolved': return '#4cd137';
-      case 'review': return '#fbc531';
-      default: return '#7f8c8d';
-    }
-  };
-
-  const renderFeedbackItem = ({ item }) => (
-    <TouchableOpacity style={styles.card} onPress={() => setSelectedFeedback(item)}>
-      <View style={styles.cardHeader}>
-        <Text style={styles.cardSubject}>{item.subject}</Text>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) }]}>
-          <Text style={styles.statusText}>{item.status?.toUpperCase()}</Text>
-        </View>
-      </View>
-      <Text numberOfLines={2} style={styles.cardDesc}>{item.description}</Text>
-      <View style={styles.cardFooter}>
-        <Text style={styles.cardMeta}>📍 {item.target}</Text>
-        {item.anonymous && <Text style={styles.anonBadge}>Anonymous</Text>}
-      </View>
-    </TouchableOpacity>
-  );
+  if (!isStudent) return <View style={styles.centered}><Text>Access Restricted</Text></View>;
 
   return (
     <View style={styles.container}>
-      <Navbar title="Feedback Center" onNotificationPress={() => navigation.navigate('Dashboard', { token })} />
-      
       <FlatList
         ListHeaderComponent={
-          <View style={styles.formContainer}>
-            <Text style={styles.headerTitle}>New Feedback</Text>
+          <View style={styles.formCard}>
+            <Text style={styles.headerTitle}>Voice Your Concern</Text>
             
             <TextInput 
               style={styles.input} 
-              placeholder="Subject" 
+              placeholder="What is this about?" 
               value={form.subject} 
-              onChangeText={v => handleChange('subject', v)} 
+              onChangeText={(v) => setForm({...form, subject: v})}
             />
 
-            <View style={styles.row}>
-                <Text style={styles.label}>Submit Anonymously?</Text>
-                <Switch 
-                    value={form.anonymous} 
-                    onValueChange={(v) => handleChange('anonymous', v)}
-                    trackColor={{ false: "#767577", true: "#2ecc71" }}
-                />
-            </View>
-
-            <View style={styles.pickerWrapper}>
-              <Picker selectedValue={form.category} onValueChange={(v) => handleChange('category', v)} style={styles.picker}>
-                <Picker.Item label="Academic Issue" value="academic" />
-                <Picker.Item label="Facility Issue" value="facility" />
-                <Picker.Item label="Service Issue" value="service" />
+            <View style={styles.pickerLabel}><Text style={styles.labelText}>Category</Text></View>
+            <View style={styles.pickerBorder}>
+              <Picker 
+                selectedValue={form.category} 
+                onValueChange={(v) => setForm({...form, category: v})}
+              >
+                <Picker.Item label="Academic" value="academic" />
+                <Picker.Item label="Facility / Infrastructure" value="facility" />
+                <Picker.Item label="Staff / Management" value="service" />
               </Picker>
             </View>
 
-            <View style={styles.pickerWrapper}>
-              <Picker selectedValue={form.target} onValueChange={(v) => handleChange('target', v)} style={styles.picker}>
-                <Picker.Item label="Target: Department" value="department" />
-                <Picker.Item label="Target: Student Affairs" value="student_affairs" />
+            <View style={styles.pickerLabel}><Text style={styles.labelText}>Send To</Text></View>
+            <View style={styles.pickerBorder}>
+              <Picker 
+                selectedValue={form.target} 
+                onValueChange={(v) => setForm({...form, target: v})}
+              >
+                <Picker.Item label="Department Head" value="department" />
+                <Picker.Item label="Student Affairs Office" value="student_affairs" />
               </Picker>
             </View>
 
             <TextInput 
               style={[styles.input, styles.textArea]} 
-              placeholder="Describe your concern..." 
-              value={form.description} 
-              onChangeText={v => handleChange('description', v)} 
+              placeholder="Detailed description..." 
               multiline 
+              value={form.description}
+              onChangeText={(v) => setForm({...form, description: v})}
             />
 
-            <TouchableOpacity style={styles.imageBtn} onPress={pickImage}>
-              <Text style={styles.imageBtnText}>{image ? '📸 Photo Attached' : '📷 Attach Evidence'}</Text>
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+                <Feather name={image ? "check-circle" : "camera"} size={18} color={image ? "#2ecc71" : "#4834d4"} />
+                <Text style={[styles.imageText, {color: image ? "#2ecc71" : "#4834d4"}]}>
+                  {image ? "Image Attached" : "Attach Photo (Optional)"}
+                </Text>
+              </TouchableOpacity>
+
+              <View style={styles.anonContainer}>
+                <Text style={styles.anonLabel}>Anonymous</Text>
+                <Switch 
+                  value={form.anonymous} 
+                  onValueChange={(v) => setForm({...form, anonymous: v})}
+                  trackColor={{ false: "#dfe4ea", true: "#70a1ff" }}
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={submitting}>
+              {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitBtnText}>Submit Feedback</Text>}
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={loading}>
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitBtnText}>Send Feedback</Text>}
-            </TouchableOpacity>
-
-            <Text style={styles.sectionTitle}>My Sent Feedback</Text>
+            {/* <Text style={styles.historyTitle}>Recent Submissions</Text> */}
           </View>
         }
-        data={feedbacks}
-        keyExtractor={item => item.id?.toString()}
-        renderItem={renderFeedbackItem}
-        contentContainerStyle={{ paddingBottom: 30 }}
+        // data={feedbacks}
+        // keyExtractor={(item) => item.id.toString()}
+        // renderItem={({ item }) => (
+        //   <TouchableOpacity style={styles.historyCard} onPress={() => setSelectedFeedback(item)}>
+        //     <View style={styles.historyTop}>
+        //       <Text style={styles.historySubject}>{item.subject}</Text>
+        //       <View style={[styles.badge, {backgroundColor: item.status === 'resolved' ? '#2ecc71' : '#f1c40f'}]}>
+        //         <Text style={styles.badgeText}>{item.status}</Text>
+        //       </View>
+        //     </View>
+        //     <Text style={styles.historyTarget}>Target: {item.target.replace('_', ' ')}</Text>
+        //   </TouchableOpacity>
+        // )}
       />
 
-      {/* DETAIL MODAL */}
-      <Modal visible={!!selectedFeedback} animationType="slide" transparent={true}>
+      {/* Details Modal */}
+      {/* <Modal visible={!!selectedFeedback} transparent animationType="slide">
         <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>{selectedFeedback?.subject}</Text>
-                <ScrollView>
-                    <Text style={styles.modalLabel}>Description:</Text>
-                    <Text style={styles.modalValue}>{selectedFeedback?.description}</Text>
-                    
-                    <Text style={styles.modalLabel}>Category: <Text style={styles.modalValue}>{selectedFeedback?.category}</Text></Text>
-                    <Text style={styles.modalLabel}>Target: <Text style={styles.modalValue}>{selectedFeedback?.target}</Text></Text>
-                    <Text style={styles.modalLabel}>Status: <Text style={[styles.modalValue, {color: getStatusColor(selectedFeedback?.status)}]}>{selectedFeedback?.status}</Text></Text>
-                    
-                    {selectedFeedback?.image && (
-                        <Image source={{ uri: selectedFeedback.image }} style={styles.modalImage} resizeMode="contain" />
-                    )}
-                </ScrollView>
-                <TouchableOpacity style={styles.closeBtn} onPress={() => setSelectedFeedback(null)}>
-                    <Text style={styles.closeBtnText}>Close</Text>
-                </TouchableOpacity>
-            </View>
+          <View style={styles.modalContent}>
+            <ScrollView>
+              <Text style={styles.modalTitle}>{selectedFeedback?.subject}</Text>
+              <Text style={styles.modalDesc}>{selectedFeedback?.description}</Text>
+              {selectedFeedback?.image && (
+                <Image source={{ uri: selectedFeedback.image }} style={styles.modalImage} resizeMode="cover" />
+              )}
+            </ScrollView>
+            <TouchableOpacity style={styles.closeBtn} onPress={() => setSelectedFeedback(null)}>
+              <Text style={styles.closeBtnText}>Back to List</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0f2f5' },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
-  formContainer: { padding: 20 },
-  headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#1e272e', marginBottom: 15 },
-  input: { backgroundColor: '#fff', borderRadius: 8, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#ddd' },
-  textArea: { height: 80, textAlignVertical: 'top' },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15, paddingHorizontal: 5 },
-  label: { fontSize: 16, color: '#2f3542' },
-  pickerWrapper: { backgroundColor: '#fff', borderRadius: 8, marginBottom: 10, borderWidth: 1, borderColor: '#ddd' },
-  picker: { height: 50 },
-  imageBtn: { padding: 12, borderRadius: 8, borderStyle: 'dashed', borderWidth: 1, borderColor: '#3498db', alignItems: 'center', marginBottom: 15 },
-  imageBtnText: { color: '#3498db' },
-  submitBtn: { backgroundColor: '#2ecc71', padding: 15, borderRadius: 8, alignItems: 'center' },
+  container: { flex: 1, backgroundColor: '#f1f2f6' },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  formCard: { padding: 20, backgroundColor: '#fff', borderBottomLeftRadius: 30, borderBottomRightRadius: 30, elevation: 5 },
+  headerTitle: { fontSize: 24, fontWeight: '800', color: '#2f3542', marginBottom: 20 },
+  input: { backgroundColor: '#f1f2f6', borderRadius: 12, padding: 15, fontSize: 16, marginBottom: 15 },
+  textArea: { height: 100, textAlignVertical: 'top' },
+  pickerLabel: { marginBottom: 5, paddingLeft: 5 },
+  labelText: { fontSize: 12, fontWeight: 'bold', color: '#747d8c', textTransform: 'uppercase' },
+  pickerBorder: { backgroundColor: '#f1f2f6', borderRadius: 12, marginBottom: 15, overflow: 'hidden' },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  imagePicker: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f1f2f6', padding: 10, borderRadius: 10 },
+  imageText: { marginLeft: 8, fontWeight: '600', fontSize: 14 },
+  anonContainer: { flexDirection: 'row', alignItems: 'center' },
+  anonLabel: { marginRight: 8, fontSize: 14, color: '#747d8c' },
+  submitBtn: { backgroundColor: '#4834d4', padding: 18, borderRadius: 15, alignItems: 'center', shadowColor: '#4834d4', shadowOpacity: 0.3, shadowRadius: 10, elevation: 5 },
   submitBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 25, marginBottom: 10 },
-  card: { backgroundColor: '#fff', marginHorizontal: 20, borderRadius: 10, padding: 15, marginBottom: 10, elevation: 2 },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between' },
-  cardSubject: { fontWeight: 'bold', fontSize: 16, flex: 1 },
-  statusBadge: { padding: 4, borderRadius: 4 },
-  statusText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
-  cardFooter: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
-  anonBadge: { fontSize: 12, color: '#e67e22', fontStyle: 'italic' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
-  modalContent: { backgroundColor: '#fff', borderRadius: 15, padding: 20, maxHeight: '80%' },
-  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 15 },
-  modalLabel: { fontWeight: 'bold', marginTop: 10, color: '#7f8c8d' },
-  modalValue: { fontWeight: 'normal', color: '#2c3e50' },
-  modalImage: { width: '100%', height: 200, marginTop: 15, borderRadius: 10 },
-  closeBtn: { marginTop: 20, backgroundColor: '#34495e', padding: 12, borderRadius: 8, alignItems: 'center' },
-  closeBtnText: { color: '#fff', fontWeight: 'bold' },
-  errorText: { fontSize: 18, textAlign: 'center', color: '#e74c3c', marginBottom: 20 },
-  backBtn: { backgroundColor: '#3498db', padding: 10, borderRadius: 5 }
+  historyTitle: { fontSize: 18, fontWeight: '700', marginTop: 30, color: '#2f3542' },
+  historyCard: { backgroundColor: '#fff', marginHorizontal: 20, marginTop: 12, padding: 15, borderRadius: 15, elevation: 2 },
+  historyTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  historySubject: { fontSize: 16, fontWeight: 'bold', color: '#2f3542' },
+  badge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
+  badgeText: { color: '#fff', fontSize: 10, fontWeight: '800', textTransform: 'uppercase' },
+  historyTarget: { fontSize: 12, color: '#747d8c', marginTop: 5 },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', padding: 20 },
+  modalContent: { backgroundColor: '#fff', borderRadius: 25, padding: 25, maxHeight: '85%' },
+  modalTitle: { fontSize: 20, fontWeight: '800', marginBottom: 15 },
+  modalDesc: { fontSize: 16, color: '#57606f', lineHeight: 22 },
+  modalImage: { width: '100%', height: 200, borderRadius: 15, marginTop: 20 },
+  closeBtn: { marginTop: 25, backgroundColor: '#2f3542', padding: 15, borderRadius: 15, alignItems: 'center' },
+  closeBtnText: { color: '#fff', fontWeight: 'bold' }
 });
 
 export default FeedbackScreen;

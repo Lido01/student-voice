@@ -14,7 +14,6 @@ const UsersScreen = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Navbar title="User Management" onNotificationPress={() => navigation.navigate('Dashboard', { token })} />
       <View style={styles.filterRow}>
         <Text style={styles.filterLabel}>Filter by role:</Text>
         <Text style={styles.filterBtn} onPress={() => setRole('')}>All</Text>

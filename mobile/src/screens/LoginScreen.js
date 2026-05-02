@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../api/api';
+import MainNavigator from '../navigation/MainNavigator';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
- const handleLogin = async () => {
+const handleLogin = async () => {
   setLoading(true);
   setError('');
   try {
@@ -47,14 +48,16 @@ export default function LoginScreen({ navigation }) {
       
       // ... your existing Remember Me logic ...
 
-      // UPDATE THIS LINE:
-      navigation.replace('Feedback', { 
+      // SUCCESSFUL FIX: Target the Main stack and pass screen name as a sub-param
+      navigation.replace('MainNavigator', { 
         token: result.access,
         user: {
           username: result.username,
           fullname: result.fullname,
           role: result.role
-        }
+        },
+        // This tells the nested stack which screen to show first
+        screen: 'Dashboard' 
       });
 
     } else {
@@ -66,6 +69,7 @@ export default function LoginScreen({ navigation }) {
     setLoading(false);
   }
 };
+
 
   const selectSuggestedUser = (user) => {
     setUsername(user);
