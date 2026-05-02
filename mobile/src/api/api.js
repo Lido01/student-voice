@@ -1,5 +1,5 @@
 // IMPORTANT: Set this to your computer's LAN IP
-const BASE_URL = 'http://10.240.41.31:8000/api';
+const BASE_URL = 'http://YOUR_PC_IP:8000/api';
 
 /**
  * Helper to handle fetch responses and ensure status is included
