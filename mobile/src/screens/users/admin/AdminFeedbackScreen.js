@@ -38,6 +38,10 @@ const AdminFeedbackScreen = ({ token, user }) => {
   };
 
   const handleStatusChange = async (newStatus) => {
+    if (!selectedItem) {
+      return;
+    }
+
     setUpdating(true);
     try {
       // Build payload based on backend requirements
@@ -57,23 +61,6 @@ const AdminFeedbackScreen = ({ token, user }) => {
       setUpdating(false);
     }
   };
-
-  const handleResolve = async () => {
-  const payload = {
-    status: 'resolved',
-    admin_response: responseMsg // Make sure this matches your Django field name
-  };
-
-  const res = await updateFeedbackStatus(token, selectedItem.id, payload);
-
-  if (res.status === 200) {
-    Alert.alert("Success", "Student has been notified of the resolution.");
-    fetchIncomingFeedback(); // Refresh the list
-    setSelectedItem(null);   // Close modal
-  } else {
-    Alert.alert("Error", res.detail || "Failed to update status");
-  }
-};
 
   const confirmDelete = (id) => {
     Alert.alert(
