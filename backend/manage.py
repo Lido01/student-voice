@@ -6,7 +6,14 @@ import sys
 
 def main():
     """Run administrative tasks."""
+
+    # 🔧 Safe enhancement: explicit environment fallback safety (no behavior change)
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+    # 🔧 Safe enhancement: optional dev debugging hint (no effect unless used)
+    if os.getenv("DJANGO_DEBUG_STARTUP") == "1":
+        print("🚀 Django management command starting...")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -15,6 +22,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
     execute_from_command_line(sys.argv)
 
 

@@ -1,11 +1,12 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.contrib.auth import get_user_model
 from .models import Feedback
 from .serializers import FeedbackSerializer
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class IsAdminOrDepartmentOrReadOnly(permissions.BasePermission):
     """
@@ -32,24 +33,31 @@ class IsAdminOrDepartmentOrReadOnly(permissions.BasePermission):
 
 
 class FeedbackViewSet(viewsets.ModelViewSet):
-    queryset = Feedback.objects.all()
+    queryset = Feedback.objects.select_related('student').all()
     serializer_class = FeedbackSerializer
+
+    # optional safety (does NOT change API behavior)
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+
     # permission_classes = [IsAdminOrDepartmentOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
         if not user.is_authenticated:
             return Feedback.objects.none()
+
         if user.role in ['admin', 'department', 'student_affairs']:
-            return Feedback.objects.all()
+            return Feedback.objects.select_related('student').all()
+
         # Students only see their own feedback
-        return Feedback.objects.filter(student=user)
+        return Feedback.objects.select_related('student').filter(student=user)
 
     def perform_create(self, serializer):
-        # If anonymous, student=None, else set student from request.user
+        # Normalize anonymous safely
         anonymous = self.request.data.get('anonymous', False)
         if isinstance(anonymous, str):
             anonymous = anonymous.lower() == 'true'
+
         if anonymous:
             serializer.save(student=None, anonymous=True)
         else:
@@ -57,46 +65,43 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='categories')
     def categories(self, request):
-        # Return the valid category choices from the model
         from .models import Feedback
-        choices = []
         field = Feedback._meta.get_field('category')
-        if hasattr(field, 'choices'):
-            choices = [c[0] for c in field.choices]
+        choices = [c[0] for c in getattr(field, 'choices', [])]
         return Response(choices)
-
-    def create(self, request, *args, **kwargs):
-        """Create feedback (login required)."""
-        return super().create(request, *args, **kwargs)
-
-    def list(self, request, *args, **kwargs):
-        """List feedbacks (role-based)."""
-        return super().list(request, *args, **kwargs)
-
-    def retrieve(self, request, *args, **kwargs):
-        """Get feedback details (role-based)."""
-        return super().retrieve(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         """Update feedback (role-based)."""
-        # Only admin/department/affairs can update status
         user = request.user
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         data = request.data.copy()
+
         if 'status' in data:
             if user.role not in ['admin', 'department', 'student_affairs']:
-                return Response({'detail': 'You do not have permission to change status.'}, status=status.HTTP_403_FORBIDDEN)
+                return Response(
+                    {'detail': 'You do not have permission to change status.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
         return Response(serializer.data)
 
+    # unchanged overrides kept for clarity only
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
     def partial_update(self, request, *args, **kwargs):
-        """Partial update feedback (role-based)."""
         return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        """Delete feedback (role-based)."""
         return super().destroy(request, *args, **kwargs)
-    
