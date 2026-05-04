@@ -24,6 +24,7 @@ export default function LoginScreen({ navigation }) {
 
   useEffect(() => {
     loadRecentUsers();
+    loadRememberedLogin();
   }, []);
 
   const loadRecentUsers = async () => {
@@ -34,6 +35,23 @@ export default function LoginScreen({ navigation }) {
       }
     } catch (e) {
       console.error("Failed to load users");
+    }
+  };
+
+  const loadRememberedLogin = async () => {
+    try {
+      const savedRememberMe = await AsyncStorage.getItem('rememberMe');
+      const savedUsername = await AsyncStorage.getItem('rememberedUsername');
+
+      if (savedRememberMe === 'true') {
+        setRememberMe(true);
+      }
+
+      if (savedUsername) {
+        setUsername(savedUsername);
+      }
+    } catch (e) {
+      console.error('Failed to load remembered login');
     }
   };
 
@@ -55,8 +73,13 @@ export default function LoginScreen({ navigation }) {
       const result = await login(username, password);
 
       if (result.status === 200 && result.access) {
+        await saveRecentUser(username);
+
         if (rememberMe) {
-          await saveRecentUser(username);
+          await AsyncStorage.setItem('rememberMe', 'true');
+          await AsyncStorage.setItem('rememberedUsername', username);
+        } else {
+          await AsyncStorage.multiRemove(['rememberMe', 'rememberedUsername']);
         }
 
         navigation.replace('MainNavigator', { 

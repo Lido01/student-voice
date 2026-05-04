@@ -16,14 +16,14 @@ const Navbar = ({
     { label: 'Dashboard', icon: 'grid', key: 'Dashboard', roles: ['admin', 'student', 'department', 'student_affairs'] },
     { label: 'New Feedback', icon: 'plus-circle', key: 'Feedback', roles: ['student'] },
     { label: 'My Submissions', icon: 'clipboard', key: 'FeedbackList', roles: ['student'] },
-    { label: 'View Feedbacks', icon: 'list', key: 'Feedback', roles: ['admin', 'department', 'student_affairs'] },
+    { label: 'View Feedbacks', icon: 'list', key: 'AdminFeedback', roles: ['admin', 'department', 'student_affairs'] },
     { 
     label: 'Incoming Issues', 
     icon: 'inbox', 
     key: 'AdminFeedback', 
     roles: ['admin', 'department', 'student_affairs'] // Students won't see this
   },
-    { label: 'Manage Users', icon: 'users', key: 'Users', roles: ['admin'] },
+    { label: 'Manage Users', icon: 'users', key: 'Users', roles: ['admin', 'department'] },
     { label: 'Reports', icon: 'bar-chart-2', key: 'Reports', roles: ['admin', 'department', 'student_affairs'] },
     { label: 'Analytics', icon: 'pie-chart', key: 'Analytics', roles: ['admin', 'student_affairs'] },
     { 

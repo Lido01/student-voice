@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, 
   Modal, ScrollView, Image, ActivityIndicator 
 } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { getFeedbacks } from '../../../api/api';
 
 const FeedbackListScreen = ({ token, user }) => {
@@ -13,15 +13,18 @@ const FeedbackListScreen = ({ token, user }) => {
 
   useEffect(() => {
     fetchMyFeedback();
-  }, []);
+  }, [token]);
 
   const fetchMyFeedback = async () => {
     setLoading(true);
-    const res = await getFeedbacks(token);
-    if (res.status === 200) {
-      setFeedbacks(res.data);
+    try {
+      const res = await getFeedbacks(token);
+      if (res.status === 200) {
+        setFeedbacks(Array.isArray(res.data) ? res.data : []);
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const getStatusStyle = (status) => {

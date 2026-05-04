@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, 
   Dimensions, ActivityIndicator 
 } from 'react-native';
-import { Feather, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { getFeedbacks } from '../../api/api';
 
 const { width } = Dimensions.get('window');
@@ -14,21 +14,19 @@ const Dashboard = ({ navigation, token, user }) => {
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [token]);
 
   const fetchStats = async () => {
     try {
       const res = await getFeedbacks(token);
       if (res.status === 200) {
-        const data = res.data;
+        const data = Array.isArray(res.data) ? res.data : [];
         setStats({
           total: data.length,
           pending: data.filter(f => f.status?.toLowerCase() !== 'resolved').length,
           resolved: data.filter(f => f.status?.toLowerCase() === 'resolved').length,
         });
       }
-    } catch (e) {
-      console.log(e);
     } finally {
       setLoading(false);
     }

@@ -17,7 +17,11 @@ async function handleResponse(response) {
     const data = await response.json();
     return { status: response.status, ...(Array.isArray(data) ? { data } : data) };
   } catch (e) {
-    return { status: response.status, detail: "JSON parse error" };
+    const text = await response.text().catch(() => '');
+    return {
+      status: response.status,
+      detail: text || 'Unexpected response from server',
+    };
   }
 }
 

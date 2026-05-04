@@ -17,9 +17,22 @@ const RegisterScreen = ({ navigation }) => {
   const handleChange = (name, value) => setForm({ ...form, [name]: value });
 
   const handleRegister = async () => {
+    if (form.password !== form.password2) {
+      Alert.alert('Validation Error', 'Passwords do not match.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const result = await register(form);
+      const payload = {
+        ...form,
+        username: form.username.trim(),
+        email: form.email.trim(),
+        role: form.role.trim().toLowerCase() || 'student',
+        user_id: form.user_id.trim(),
+      };
+
+      const result = await register(payload);
       if (result.status === 201) {
         Alert.alert('Success', 'Registration successful!');
         navigation.replace('Login');
