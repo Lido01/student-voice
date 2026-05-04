@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../api/api';
-import MainNavigator from '../navigation/MainNavigator';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -38,37 +37,48 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
-const handleLogin = async () => {
-  setLoading(true);
-  setError('');
-  try {
-    const result = await login(username, password);
-    
-    if (result.status === 200 && result.access) {
-      
-      // ... your existing Remember Me logic ...
-
-      // SUCCESSFUL FIX: Target the Main stack and pass screen name as a sub-param
-      navigation.replace('MainNavigator', { 
-        token: result.access,
-        user: {
-          username: result.username,
-          fullname: result.fullname,
-          role: result.role
-        },
-        // This tells the nested stack which screen to show first
-        screen: 'Dashboard' 
-      });
-
-    } else {
-      setError(result.detail || 'Invalid credentials');
+  const saveRecentUser = async (value) => {
+    const normalized = value.trim();
+    if (!normalized) {
+      return;
     }
-  } catch (e) {
-    setError('Could not connect to server.');
-  } finally {
-    setLoading(false);
-  }
-};
+
+    const nextUsers = [normalized, ...recentUsers.filter((item) => item !== normalized)].slice(0, 5);
+    setRecentUsers(nextUsers);
+    await AsyncStorage.setItem('recentUsers', JSON.stringify(nextUsers));
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const result = await login(username, password);
+
+      if (result.status === 200 && result.access) {
+        if (rememberMe) {
+          await saveRecentUser(username);
+        }
+
+        navigation.replace('MainNavigator', { 
+          token: result.access,
+          user: {
+            username: result.username,
+            fullname: result.fullname,
+            role: result.role,
+            email: result.email,
+            user_id: result.user_id,
+          },
+          screen: 'Dashboard' 
+        });
+      } else {
+        setError(result.detail || 'Invalid credentials');
+      }
+    } catch (e) {
+      setError('Could not connect to server.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const selectSuggestedUser = (user) => {

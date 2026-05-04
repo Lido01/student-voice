@@ -1,5 +1,13 @@
-// IMPORTANT: Set this to your computer's LAN IP
-const BASE_URL = 'http://YOUR_PC_IP:8000/api';
+import { Platform } from 'react-native';
+
+const DEFAULT_BASE_URL = Platform.select({
+  android: 'http://10.0.2.2:8000/api',
+  ios: 'http://localhost:8000/api',
+  default: 'http://localhost:8000/api',
+});
+
+// Allow local development without editing source, while still supporting device testing.
+const BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
 
 /**
  * Helper to handle fetch responses and ensure status is included

@@ -19,13 +19,12 @@ const RegisterScreen = ({ navigation }) => {
   const handleRegister = async () => {
     setLoading(true);
     try {
-      const response = await register(form);
-      const data = await response.json();
-      if (response.ok) {
+      const result = await register(form);
+      if (result.status === 201) {
         Alert.alert('Success', 'Registration successful!');
         navigation.replace('Login');
       } else {
-        Alert.alert('Registration Failed', JSON.stringify(data));
+        Alert.alert('Registration Failed', JSON.stringify(result));
       }
     } catch (e) {
       Alert.alert('Error', 'Could not connect to server.');
