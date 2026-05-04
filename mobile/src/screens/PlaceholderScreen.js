@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const PlaceholderScreen = ({ navigation, route }) => {
   const title = route?.params?.title || 'Coming Soon';
-  const description = route?.params?.description || 'This section is being built out for the next release.';
+  const description = route?.params?.description || 'This section is still being built out for a future release.';
 
   return (
     <View style={styles.container}>
