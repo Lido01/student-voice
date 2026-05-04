@@ -20,7 +20,7 @@ class IsAdminOrDepartmentOrAffair(permissions.BasePermission):
 
 
 class UserListView(generics.ListAPIView):
-	queryset = User.objects.all()
+	queryset = User.objects.all().order_by('username')
 	serializer_class = UserListSerializer
 	permission_classes = [IsAdminOrDepartmentOrAffair]
 
