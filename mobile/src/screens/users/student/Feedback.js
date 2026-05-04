@@ -232,3 +232,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackScreen;
+FeedbackScreen.displayName = 'FeedbackScreen';
