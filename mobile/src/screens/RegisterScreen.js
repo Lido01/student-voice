@@ -49,10 +49,10 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Create Account</Text>
-      <TextInput style={styles.input} placeholder="Username" value={form.username} onChangeText={v => handleChange('username', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Email" value={form.email} onChangeText={v => handleChange('email', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="User ID" value={form.user_id} onChangeText={v => handleChange('user_id', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Role (student, admin, department, student_affairs)" value={form.role} onChangeText={v => handleChange('role', v)} autoCapitalize="none" />
+      <TextInput style={styles.input} placeholder="Username" value={form.username} onChangeText={v => handleChange('username', v)} autoCapitalize="none" autoCorrect={false} />
+      <TextInput style={styles.input} placeholder="Email" value={form.email} onChangeText={v => handleChange('email', v)} autoCapitalize="none" autoCorrect={false} keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="User ID" value={form.user_id} onChangeText={v => handleChange('user_id', v)} autoCapitalize="none" autoCorrect={false} />
+      <TextInput style={styles.input} placeholder="Role (student, admin, department, student_affairs)" value={form.role} onChangeText={v => handleChange('role', v)} autoCapitalize="none" autoCorrect={false} />
       <TextInput style={styles.input} placeholder="Password" value={form.password} onChangeText={v => handleChange('password', v)} secureTextEntry />
       <TextInput style={styles.input} placeholder="Confirm Password" value={form.password2} onChangeText={v => handleChange('password2', v)} secureTextEntry />
       <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
