@@ -1,13 +1,27 @@
 import React from 'react';
 import { View, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import Navbar from '../screens/Navbar';
 
 const Layout = ({ children, title, navigation, user, onNotificationPress }) => {
   const handleLogout = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
+      );
+      return;
+    }
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      })
+    );
   };
 
   return (
