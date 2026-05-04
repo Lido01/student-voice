@@ -104,3 +104,4 @@ const styles = StyleSheet.create({
 });
 
 export default UsersScreen;
+UsersScreen.displayName = 'UsersScreen';
