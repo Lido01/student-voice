@@ -112,3 +112,4 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
+RegisterScreen.displayName = 'RegisterScreen';
