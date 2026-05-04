@@ -12,11 +12,11 @@ A modern, cross-platform mobile application built with **React Native** designed
 
 ## 🚀 Tech Stack
 
-- **Framework:** React Native
-- **State Management:** Redux Toolkit / Context API
+- **Framework:** Expo + React Native
+- **State Management:** Local component state
 - **Navigation:** React Navigation
-- **Backend:** [Mention your backend here, e.g., Firebase / Node.js]
-- **Database:** [Mention your database here, e.g., PostgreSQL / MongoDB]
+- **Backend:** Django REST Framework + Simple JWT
+- **Database:** SQLite for local development
 
 ## 🛠️ Installation
 
@@ -33,26 +33,32 @@ A modern, cross-platform mobile application built with **React Native** designed
    yarn install
    ```
 
-3. **Install iOS CocoaPods (macOS only):**
+3. **Set the API base URL for local development:**
    ```bash
-   cd ios && pod install && cd ..
+   # Android emulator
+   export EXPO_PUBLIC_API_BASE_URL=http://10.0.2.2:8000/api
+
+   # iOS simulator or web
+   export EXPO_PUBLIC_API_BASE_URL=http://localhost:8000/api
    ```
 
 4. **Run the application:**
-   - **Android:** `npx react-native run-android`
-   - **iOS:** `npx react-native run-ios`
+   - **Android / iOS / Web:** `npx expo start`
+   - Then press `a`, `i`, or `w` in the Expo terminal.
 
 ## 📂 Folder Structure
 
 ```text
-src/
- ┣ assets/       # Images, fonts, and static files
- ┣ components/   # Reusable UI components
- ┣ navigation/   # Stack and Tab navigators
- ┣ screens/      # Main application screens
- ┣ services/     # API calls and external integrations
- ┣ store/        # State management logic
- ┗ utils/        # Helper functions and constants
+mobile/
+ ┣ App.js
+ ┣ src/
+ ┃ ┣ api/         # HTTP helpers and backend client
+ ┃ ┣ components/  # Shared UI wrappers
+ ┃ ┣ navigation/  # Navigator setup
+ ┃ ┗ screens/     # Feature screens
+backend/
+ ┣ apps/          # Django apps for auth, feedback, notifications, departments
+ ┗ config/        # Project settings and URL routing
 ```
 
 ## 🤝 Contributing

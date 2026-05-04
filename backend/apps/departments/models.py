@@ -6,5 +6,15 @@ class Department(models.Model):
 	description = models.TextField(blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 
+	# 🔧 Safe enhancement: better admin display
+	class Meta:
+		verbose_name = "Department"
+		verbose_name_plural = "Departments"
+		ordering = ['name']
+
 	def __str__(self):
 		return self.name
+
+	# 🔧 Safe enhancement: helper method (no DB impact)
+	def has_description(self):
+		return bool(self.description and self.description.strip())

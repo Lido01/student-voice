@@ -3,8 +3,8 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import Navbar from '../../Navbar';
 import { getUsers } from '../../../api/api';
 
-const UsersScreen = ({ navigation, route }) => {
-  const token = route.params?.token;
+const UsersScreen = ({ navigation, route, token: tokenProp }) => {
+  const token = tokenProp || route.params?.token;
   const [users, setUsers] = useState([]);
   const [role, setRole] = useState('');
 

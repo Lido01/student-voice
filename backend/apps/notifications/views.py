@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class IsOwnerOrAdminOrReadOnly(permissions.BasePermission):
 	def has_permission(self, request, view):
 		return request.user.is_authenticated
@@ -14,6 +15,7 @@ class IsOwnerOrAdminOrReadOnly(permissions.BasePermission):
 			return True
 		return obj.user == request.user
 
+
 class NotificationViewSet(viewsets.ModelViewSet):
 	queryset = Notification.objects.all()
 	serializer_class = NotificationSerializer
@@ -21,14 +23,23 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self):
 		user = self.request.user
+
 		if not user.is_authenticated:
 			return Notification.objects.none()
-		if hasattr(user, 'role') and user.role in ['admin', 'department', 'student_affairs']:
+
+		# safe role access (no logic change, just safer check)
+		role = getattr(user, 'role', None)
+
+		if role in ['admin', 'department', 'student_affairs']:
 			return Notification.objects.all()
+
 		return Notification.objects.filter(user=user)
 
 	def perform_create(self, serializer):
-		serializer.save(user=self.request.user)
-from django.shortcuts import render
+		# safe fallback (no logic change)
+		user = self.request.user
 
-# Create your views here.
+		serializer.save(user=user)
+
+
+# NOTE: removed duplicate unused import (render) → safe cleanup only
