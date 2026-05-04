@@ -149,3 +149,4 @@ const styles = StyleSheet.create({
 });
 
 export default HelpScreen;
+HelpScreen.displayName = 'HelpScreen';
