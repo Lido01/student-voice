@@ -132,6 +132,8 @@ const Dashboard = ({ navigation, token, user }) => {
   );
 };
 
+Dashboard.displayName = 'Dashboard';
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f9fafd', padding: 20 },
   header: { 
