@@ -37,3 +37,4 @@ const styles = StyleSheet.create({
 });
 
 export default ScreenWrapper;
+ScreenWrapper.displayName = 'ScreenWrapper';
