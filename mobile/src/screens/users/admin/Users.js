@@ -15,6 +15,9 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
       getUsers(token, role).then((res) => {
         setUsers(Array.isArray(res.data) ? res.data : []);
         setLoading(false);
+      }).catch(() => {
+        setUsers([]);
+        setLoading(false);
       });
     } else {
       setLoading(false);
