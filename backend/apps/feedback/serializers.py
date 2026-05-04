@@ -17,8 +17,16 @@ class FeedbackSerializer(serializers.ModelSerializer):
     def validate(self, data):
         # If anonymous is True, student is not required
         anonymous = data.get('anonymous', False)
+        target = data.get('target')
 
         if anonymous:
             data['student'] = None
+
+        if isinstance(target, str):
+            data['target'] = target.strip().lower()
+
+        for field in ('subject', 'description'):
+            if field in data and isinstance(data[field], str):
+                data[field] = data[field].strip()
 
         return data
