@@ -7,7 +7,6 @@ class AccountsConfig(AppConfig):
 
     # 🔧 Safe enhancement: app metadata (no behavior change)
     verbose_name = "Accounts Management"
-
-    # 🔧 Safe hook placeholder (does nothing unless extended later)
+    
     def ready(self):
-        import apps.accounts.signals  # safe convention if signals exist
+        import apps.accounts.signals
