@@ -15,7 +15,7 @@ const AdminFeedbackScreen = ({ token, user }) => {
 
   useEffect(() => {
     fetchIncomingFeedback();
-  }, []);
+  }, [token, user]);
 
   const fetchIncomingFeedback = async () => {
     setLoading(true);
@@ -24,9 +24,10 @@ const AdminFeedbackScreen = ({ token, user }) => {
       if (res.status === 200) {
         // Filter based on role (Admins see everything)
         const userRole = user?.role?.toLowerCase();
+        const allFeedback = Array.isArray(res.data) ? res.data : [];
         const filtered = userRole === 'admin' 
-          ? res.data 
-          : res.data.filter(item => item.target === userRole);
+          ? allFeedback 
+          : allFeedback.filter(item => item.target === userRole);
         setFeedbacks(filtered);
       }
     } catch (err) {
