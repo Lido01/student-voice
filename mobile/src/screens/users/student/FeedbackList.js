@@ -165,3 +165,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackListScreen;
+FeedbackListScreen.displayName = 'FeedbackListScreen';
