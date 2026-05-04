@@ -9,6 +9,7 @@ const PlaceholderScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
+      <Text style={styles.note}>Use the back button to return to the app.</Text>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Go Back</Text>
@@ -38,6 +39,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 24,
+  },
+  note: {
+    fontSize: 13,
+    color: '#a4b0be',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   button: {
     paddingHorizontal: 18,
