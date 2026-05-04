@@ -124,6 +124,8 @@ const FeedbackListScreen = ({ token, user }) => {
   );
 };
 
+FeedbackListScreen.displayName = 'FeedbackListScreen';
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f8fa' },
   card: { 
