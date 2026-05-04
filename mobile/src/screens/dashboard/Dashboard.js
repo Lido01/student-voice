@@ -209,3 +209,4 @@ const styles = StyleSheet.create({
 });
 
 export default Dashboard;
+Dashboard.displayName = 'Dashboard';
