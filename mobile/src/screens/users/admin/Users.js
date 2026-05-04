@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import Navbar from '../../Navbar';
 import { getUsers } from '../../../api/api';
 
@@ -7,12 +7,17 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
   const token = tokenProp || route.params?.token;
   const [users, setUsers] = useState([]);
   const [role, setRole] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (token) {
+      setLoading(true);
       getUsers(token, role).then((res) => {
         setUsers(Array.isArray(res.data) ? res.data : []);
+        setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
   }, [token, role]);
 
@@ -26,18 +31,22 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
         <Text style={styles.filterBtn} onPress={() => setRole('department')}>Department</Text>
         <Text style={styles.filterBtn} onPress={() => setRole('student_affairs')}>Affairs</Text>
       </View>
-      <FlatList
-        data={users}
-        keyExtractor={item => item.id?.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.userItem}>
-            <Text style={styles.userName}>{item.username}</Text>
-            <Text style={styles.userMeta}>{item.email} | {item.role} | {item.user_id}</Text>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={styles.empty}>No users found.</Text>}
-        contentContainerStyle={{ padding: 20 }}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#4834d4" style={{ marginTop: 40 }} />
+      ) : (
+        <FlatList
+          data={users}
+          keyExtractor={item => item.id?.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.userItem}>
+              <Text style={styles.userName}>{item.username}</Text>
+              <Text style={styles.userMeta}>{item.email} | {item.role} | {item.user_id}</Text>
+            </View>
+          )}
+          ListEmptyComponent={<Text style={styles.empty}>No users found.</Text>}
+          contentContainerStyle={{ padding: 20 }}
+        />
+      )}
     </View>
   );
 };
