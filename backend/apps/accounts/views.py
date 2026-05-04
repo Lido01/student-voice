@@ -1,7 +1,12 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-from .serializers import RegisterSerializer, UserListSerializer
+from .serializers import (
+    RegisterSerializer,
+    UserListSerializer,
+    CustomTokenObtainPairSerializer,
+)
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 User = get_user_model()
 
@@ -17,9 +22,7 @@ class IsAdminOrDepartmentOrAffair(permissions.BasePermission):
 class UserListView(generics.ListAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserListSerializer
-
-	# 🔧 Optional security layer (NOT enabled to avoid breaking system)
-	# permission_classes = [IsAdminOrDepartmentOrAffair]
+	permission_classes = [IsAdminOrDepartmentOrAffair]
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -66,3 +69,7 @@ class RegisterView(generics.CreateAPIView):
 		headers = self.get_success_headers(serializer.data)
 
 		return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+	serializer_class = CustomTokenObtainPairSerializer
