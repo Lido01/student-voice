@@ -30,3 +30,5 @@ class FeedbackSerializer(serializers.ModelSerializer):
                 data[field] = data[field].strip()
 
         return data
+
+FeedbackSerializer.__name__ = 'FeedbackSerializer'

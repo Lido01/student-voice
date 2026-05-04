@@ -101,6 +101,8 @@ const FeedbackScreen = ({ navigation, token, user }) => {
               placeholder="What is this about?" 
               value={form.subject} 
               onChangeText={(v) => setForm({...form, subject: v})}
+              autoCapitalize="sentences"
+              autoCorrect={false}
             />
 
             <View style={styles.pickerLabel}><Text style={styles.labelText}>Category</Text></View>
@@ -132,6 +134,7 @@ const FeedbackScreen = ({ navigation, token, user }) => {
               multiline 
               value={form.description}
               onChangeText={(v) => setForm({...form, description: v})}
+              autoCapitalize="sentences"
             />
 
             <View style={styles.row}>
@@ -229,3 +232,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackScreen;
+FeedbackScreen.displayName = 'FeedbackScreen';

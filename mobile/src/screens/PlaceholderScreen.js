@@ -3,12 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const PlaceholderScreen = ({ navigation, route }) => {
   const title = route?.params?.title || 'Coming Soon';
-  const description = route?.params?.description || 'This section is being built out for the next release.';
+  const description = route?.params?.description || 'This section is still being built out for a future release.';
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
+      <Text style={styles.note}>Use the back button to return to the app.</Text>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Go Back</Text>
@@ -39,6 +40,12 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 24,
   },
+  note: {
+    fontSize: 13,
+    color: '#a4b0be',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   button: {
     paddingHorizontal: 18,
     paddingVertical: 12,
@@ -52,3 +59,4 @@ const styles = StyleSheet.create({
 });
 
 export default PlaceholderScreen;
+PlaceholderScreen.displayName = 'PlaceholderScreen';

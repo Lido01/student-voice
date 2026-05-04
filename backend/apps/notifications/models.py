@@ -20,3 +20,6 @@ class Notification(models.Model):
             models.Index(fields=['user', 'is_read']),
             models.Index(fields=['created_at']),
         ]
+
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"

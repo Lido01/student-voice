@@ -12,3 +12,5 @@ class NotificationSerializer(serializers.ModelSerializer):
 		extra_kwargs = {
 			'is_read': {'required': False},
 		}
+
+NotificationSerializer.__name__ = 'NotificationSerializer'

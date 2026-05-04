@@ -15,6 +15,9 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
       getUsers(token, role).then((res) => {
         setUsers(Array.isArray(res.data) ? res.data : []);
         setLoading(false);
+      }).catch(() => {
+        setUsers([]);
+        setLoading(false);
       });
     } else {
       setLoading(false);
@@ -50,6 +53,8 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
     </View>
   );
 };
+
+UsersScreen.displayName = 'UsersScreen';
 
 const styles = StyleSheet.create({
   filterRow: {
@@ -99,3 +104,4 @@ const styles = StyleSheet.create({
 });
 
 export default UsersScreen;
+UsersScreen.displayName = 'UsersScreen';

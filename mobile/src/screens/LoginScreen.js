@@ -137,6 +137,7 @@ export default function LoginScreen({ navigation }) {
         onChangeText={setUsername}
         style={styles.input}
         autoCapitalize="none"
+        autoCorrect={false}
       />
 
       {/* Password Input with Visibility Toggle */}
@@ -147,6 +148,7 @@ export default function LoginScreen({ navigation }) {
           value={password}
           onChangeText={setPassword}
           style={[styles.input, { marginBottom: 0, flex: 1, borderWidth: 0 }]}
+          autoCorrect={false}
         />
         <TouchableOpacity 
           onPress={() => setIsPasswordVisible(!isPasswordVisible)}
@@ -177,6 +179,8 @@ export default function LoginScreen({ navigation }) {
     </View>
   );
 }
+
+LoginScreen.displayName = 'LoginScreen';
 
 const styles = StyleSheet.create({
   container: {

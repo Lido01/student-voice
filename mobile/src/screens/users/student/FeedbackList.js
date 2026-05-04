@@ -31,6 +31,7 @@ const FeedbackListScreen = ({ token, user }) => {
     switch (status?.toLowerCase()) {
       case 'resolved': return { bg: '#e1f7ec', text: '#2ecc71', icon: 'check-circle' };
       case 'pending': return { bg: '#fff4e5', text: '#f39c12', icon: 'clock' };
+      case 'review': return { bg: '#eef2ff', text: '#4834d4', icon: 'alert-circle' };
       default: return { bg: '#f1f2f6', text: '#747d8c', icon: 'info' };
     }
   };
@@ -123,6 +124,8 @@ const FeedbackListScreen = ({ token, user }) => {
   );
 };
 
+FeedbackListScreen.displayName = 'FeedbackListScreen';
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f8fa' },
   card: { 
@@ -162,3 +165,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackListScreen;
+FeedbackListScreen.displayName = 'FeedbackListScreen';

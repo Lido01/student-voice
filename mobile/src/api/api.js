@@ -7,7 +7,7 @@ const DEFAULT_BASE_URL = Platform.select({
 });
 
 // Allow local development without editing source, while still supporting device testing.
-const BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
+const BASE_URL = String(process.env.EXPO_PUBLIC_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
 
 /**
  * Helper to handle fetch responses and ensure status is included
@@ -123,3 +123,5 @@ export async function getUsers(token, role) {
   });
   return handleResponse(response);
 }
+
+export const apiBaseUrl = BASE_URL;

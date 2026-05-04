@@ -101,6 +101,8 @@ const AdminFeedbackScreen = ({ token, user }) => {
     </TouchableOpacity>
   );
 
+AdminFeedbackScreen.displayName = 'AdminFeedbackScreen';
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -196,3 +198,4 @@ const styles = StyleSheet.create({
 });
 
 export default AdminFeedbackScreen;
+AdminFeedbackScreen.displayName = 'AdminFeedbackScreen';

@@ -14,13 +14,11 @@ User = get_user_model()
 # 🔧 Safe RBAC permission (unchanged behavior, just documented better)
 class IsAdminOrDepartmentOrAffair(permissions.BasePermission):
 	def has_permission(self, request, view):
-		return request.user.is_authenticated and getattr(
-			request.user, 'role', None
-		) in ['admin', 'department', 'student_affairs']
+		return request.user.is_authenticated and getattr(request.user, 'role', None) in ['admin', 'department', 'student_affairs']
 
 
 class UserListView(generics.ListAPIView):
-	queryset = User.objects.all()
+	queryset = User.objects.all().order_by('username')
 	serializer_class = UserListSerializer
 	permission_classes = [IsAdminOrDepartmentOrAffair]
 
