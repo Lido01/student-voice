@@ -9,7 +9,6 @@ import {
 
 const ScreenWrapper = ({ children }) => {
   return (
-    // SafeAreaView prevents content from going under the status bar/notch
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -17,7 +16,7 @@ const ScreenWrapper = ({ children }) => {
       >
         <ScrollView 
           contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled" // Closes keyboard when tapping buttons
+          keyboardShouldPersistTaps="handled"
         >
           {children}
         </ScrollView>
@@ -29,11 +28,11 @@ const ScreenWrapper = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', // Set your app's default background color
+    backgroundColor: '#fff',
   },
   scrollContent: {
-    flexGrow: 1, // Ensures content can fill the screen or scroll if longer
-    padding: 20, // Global padding for all screens
+    flexGrow: 1,
+    padding: 20,
   },
 });
 
