@@ -25,11 +25,11 @@ const FeedbackScreen = ({ navigation, token, user }) => {
 
   useEffect(() => {
     if (isStudent && token) fetchHistory();
-  }, [token]);
+  }, [isStudent, token]);
 
   const fetchHistory = async () => {
     const res = await getFeedbacks(token);
-    if (res.status === 200) setFeedbacks(res.data);
+    if (res.status === 200) setFeedbacks(Array.isArray(res.data) ? res.data : []);
   };
 
   const pickImage = async () => {
