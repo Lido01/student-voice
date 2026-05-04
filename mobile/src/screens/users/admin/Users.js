@@ -54,6 +54,8 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
   );
 };
 
+UsersScreen.displayName = 'UsersScreen';
+
 const styles = StyleSheet.create({
   filterRow: {
     flexDirection: 'row',
