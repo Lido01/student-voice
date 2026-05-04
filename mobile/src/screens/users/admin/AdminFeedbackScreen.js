@@ -198,3 +198,4 @@ const styles = StyleSheet.create({
 });
 
 export default AdminFeedbackScreen;
+AdminFeedbackScreen.displayName = 'AdminFeedbackScreen';
