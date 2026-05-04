@@ -28,6 +28,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         read_only_fields = ()
 
     def validate(self, attrs):
+        attrs['username'] = attrs['username'].strip()
+        attrs['email'] = attrs['email'].strip()
+        attrs['role'] = attrs.get('role', 'student').strip().lower()
+
+        valid_roles = {choice[0] for choice in User.ROLE_CHOICES}
+        if attrs['role'] not in valid_roles:
+            raise serializers.ValidationError({'role': 'Select a valid role.'})
+
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({'password': "Passwords don't match."})
         return attrs
