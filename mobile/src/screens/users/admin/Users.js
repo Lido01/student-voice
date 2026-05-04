@@ -9,7 +9,11 @@ const UsersScreen = ({ navigation, route, token: tokenProp }) => {
   const [role, setRole] = useState('');
 
   useEffect(() => {
-    if (token) getUsers(token, role).then(setUsers);
+    if (token) {
+      getUsers(token, role).then((res) => {
+        setUsers(Array.isArray(res.data) ? res.data : []);
+      });
+    }
   }, [token, role]);
 
   return (
