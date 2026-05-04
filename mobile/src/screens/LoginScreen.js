@@ -73,8 +73,9 @@ export default function LoginScreen({ navigation }) {
       const result = await login(username, password);
 
       if (result.status === 200 && result.access) {
+        await saveRecentUser(username);
+
         if (rememberMe) {
-          await saveRecentUser(username);
           await AsyncStorage.setItem('rememberMe', 'true');
           await AsyncStorage.setItem('rememberedUsername', username);
         } else {
