@@ -13,11 +13,14 @@ import AdminFeedbackScreen from '../screens/users/admin/AdminFeedbackScreen';
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = ({ route }) => {
-  // Grab user and token passed from Login
-  const { token, user } = route.params || {};
+  // Grab user, token, and the first screen passed from Login
+  const { token, user, screen: initialScreen = 'Dashboard' } = route.params || {};
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={initialScreen}
+    >
       <Stack.Screen name="Dashboard">
         {(props) => (
           <Layout {...props} title="Console" user={user}>
