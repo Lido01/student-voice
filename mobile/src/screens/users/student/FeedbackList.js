@@ -17,11 +17,14 @@ const FeedbackListScreen = ({ token, user }) => {
 
   const fetchMyFeedback = async () => {
     setLoading(true);
-    const res = await getFeedbacks(token);
-    if (res.status === 200) {
-      setFeedbacks(Array.isArray(res.data) ? res.data : []);
+    try {
+      const res = await getFeedbacks(token);
+      if (res.status === 200) {
+        setFeedbacks(Array.isArray(res.data) ? res.data : []);
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const getStatusStyle = (status) => {
