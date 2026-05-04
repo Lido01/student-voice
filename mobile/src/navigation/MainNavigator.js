@@ -7,6 +7,7 @@ import UsersScreen from '../screens/users/admin/Users';
 
 import FeedbackListScreen from '../screens/users/student/FeedbackList';
 import HelpScreen from '../screens/HelpScreen';
+import PlaceholderScreen from '../screens/PlaceholderScreen';
 
 import AdminFeedbackScreen from '../screens/users/admin/AdminFeedbackScreen';
 
@@ -65,6 +66,39 @@ const MainNavigator = ({ route }) => {
         {(props) => (
           <Layout {...props} title="Feedback" user={user}>
             <AdminFeedbackScreen {...props} token={token} user={user} />
+          </Layout>
+        )}
+      </Stack.Screen>
+
+      <Stack.Screen name="Reports">
+        {(props) => (
+          <Layout {...props} title="Reports" user={user}>
+            <PlaceholderScreen
+              {...props}
+              route={{ ...props.route, params: { title: 'Reports', description: 'Reports will be available soon.' } }}
+            />
+          </Layout>
+        )}
+      </Stack.Screen>
+
+      <Stack.Screen name="Analytics">
+        {(props) => (
+          <Layout {...props} title="Analytics" user={user}>
+            <PlaceholderScreen
+              {...props}
+              route={{ ...props.route, params: { title: 'Analytics', description: 'Analytics dashboards are coming soon.' } }}
+            />
+          </Layout>
+        )}
+      </Stack.Screen>
+
+      <Stack.Screen name="Settings">
+        {(props) => (
+          <Layout {...props} title="Settings" user={user}>
+            <PlaceholderScreen
+              {...props}
+              route={{ ...props.route, params: { title: 'Settings', description: 'Settings are not configured yet.' } }}
+            />
           </Layout>
         )}
       </Stack.Screen>
