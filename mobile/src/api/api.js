@@ -123,3 +123,5 @@ export async function getUsers(token, role) {
   });
   return handleResponse(response);
 }
+
+export const apiBaseUrl = BASE_URL;
