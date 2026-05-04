@@ -180,6 +180,8 @@ export default function LoginScreen({ navigation }) {
   );
 }
 
+LoginScreen.displayName = 'LoginScreen';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
