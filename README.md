@@ -52,11 +52,26 @@ Get the latest version of the app directly to your device.
 
 ---
 
+## 📂 Folder Structure
+
+```text
+mobile/
+ ┣ App.js
+ ┣ src/
+ ┃ ┣ api/         # HTTP helpers and backend client
+ ┃ ┣ components/  # Shared UI wrappers
+ ┃ ┣ navigation/  # Navigator setup
+ ┃ ┗ screens/     # Feature screens
+backend/
+ ┣ apps/          # Django apps for auth, feedback, notifications, departments
+ ┗ config/        # Project settings and URL routing
+```
+
 ## 🚀 Tech Stack
 
 ### Mobile Frontend
 *   **Framework:** React Native
-*   **Styling:** Tailwind CSS (NativeWind) & Framer Motion for fluid animations.
+*   **Styling:** CSS inline styling.
 *   **State Management:** Redux Toolkit & Context API.
 
 ### AI Agent Backend
