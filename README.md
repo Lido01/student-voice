@@ -1,75 +1,77 @@
 # StudentVoice 🎓
+**Modernizing Academic Evaluations With Real-Time Connectivity**
 
 A modern, cross-platform mobile application built with **React Native** designed to streamline student feedback and academic evaluations. **StudentVoice** bridges the gap between students and educators, providing a transparent and efficient way to improve the learning experience.
 
-## 📱 Features
+---
 
-- **Real-time Evaluations:** Submit feedback on courses and instructors instantly.
-- **Anonymous Reporting:** Secure and private feedback channels to ensure honest student input.
-- **Interactive Dashboards:** Visual representation of evaluation data for faculty.
-- **Push Notifications:** Reminders for pending surveys and academic updates.
-- **Offline Support:** Draft feedback offline and sync once connected.
+## 📥 Download & Install (Android)
+
+Get the latest version of the app directly to your device.
+
+| Platform | Download Link | Version | Build Status |
+| :--- | :--- | :--- | :--- |
+| **Android** | [**Download StudentVoice APK**](https://expo.dev/artifacts/eas/iS3meWC59ffWs8c8X3jqqr.apk) | `v1.0.0-preview` | ![Live](https://img.shields.io/badge/Status-Live-success) |
+
+> **Installation Tip:** As this is a direct APK, you may need to enable **"Install from Unknown Sources"** in your device's security settings.
+
+---
+
+## 📱 Core Features
+
+*   **Real-time Evaluations:** Instantly submit feedback on courses and instructors.
+*   **Biometric Integrity:** Integrated face-detection logic for secure attendance and verification.
+*   **Anonymous Reporting:** End-to-end privacy ensures honest student input without fear of reprisal.
+*   **Intuitive Dashboards:** Beautiful, dark-mode optimized data visualizations for faculty.
+*   **Push Notifications:** Stay updated with real-time academic alerts and survey reminders.
+
+### 👨‍🎓 Student
+
+* Register and login
+* Submit feedback with categories
+* Track their status
+* Get a help
+* Restriction: limited feedback submission
+
+### 👨‍🎓 Department/Student_Affairs
+
+* Login dashboard
+* View all feedback
+* Filter by course
+* Give feedback responses
+* Manage courses, changes the status
+
+### 👨‍💼 Admin
+
+* Login dashboard
+* View all feedback
+* Filter by course or instructor
+* View average ratings
+* Manage users, courses, and instructors
+* View Analytics and Reports
+
+---
 
 ## 🚀 Tech Stack
 
-- **Framework:** Expo + React Native
-- **State Management:** Local component state
-- **Navigation:** React Navigation
-- **Backend:** Django REST Framework + Simple JWT
-- **Database:** SQLite for local development
+### Mobile Frontend
+*   **Framework:** React Native
+*   **Styling:** Tailwind CSS (NativeWind) & Framer Motion for fluid animations.
+*   **State Management:** Redux Toolkit & Context API.
 
-## 🛠️ Installation
+### AI Agent Backend
+*   **Core:** Django & Django REST Framework (DRF).
+*   **Real-time Logic:** WebSockets via Django Channels.
+*   **AI Engine:** InsightFace & ONNX Runtime for biometric processing.
+*   **Database:** PostgreSQL (Deployed on Render).
+*   **Server:** Gunicorn with WhiteNoise for static file management.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com
-   cd student-voice
-   ```
+---
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+## 🛠️ Developer Setup
 
-3. **Set the API base URL for local development:**
-   ```bash
-   # Android emulator
-   export EXPO_PUBLIC_API_BASE_URL=http://10.0.2.2:8000/api
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/Lido01/eval-campus](https://github.com/Lido01/eval-campus)
+cd eval-campus
 
-   # iOS simulator or web
-   export EXPO_PUBLIC_API_BASE_URL=http://localhost:8000/api
-   ```
-
-4. **Run the application:**
-   - **Android / iOS / Web:** `npx expo start`
-   - Then press `a`, `i`, or `w` in the Expo terminal.
-
-## 📂 Folder Structure
-
-```text
-mobile/
- ┣ App.js
- ┣ src/
- ┃ ┣ api/         # HTTP helpers and backend client
- ┃ ┣ components/  # Shared UI wrappers
- ┃ ┣ navigation/  # Navigator setup
- ┃ ┗ screens/     # Feature screens
-backend/
- ┣ apps/          # Django apps for auth, feedback, notifications, departments
- ┗ config/        # Project settings and URL routing
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork the project.
-2. Create your feature branch (`git checkout -b feature/NewFeature`).
-3. Commit your changes (`git commit -m 'Add some NewFeature'`).
-4. Push to the branch (`git push origin feature/NewFeature`).
-5. Open a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
