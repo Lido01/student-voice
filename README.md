@@ -90,3 +90,4 @@ backend/
 git clone [https://github.com/Lido01/eval-campus](https://github.com/Lido01/eval-campus)
 cd eval-campus
 
+<!-- collaboration sync 1/30: 2026-05-09 20:27:59 +03:00 -->
