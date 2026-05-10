@@ -24,3 +24,11 @@ Get the latest version of the app directly to your device.
 *   **Anonymous Reporting:** End-to-end privacy mechanisms guarantee that student input remains confidential, fostering honest and unbiased feedback without fear of reprisal.
 *   **Intuitive Dashboards:** Dark-mode optimized data visualizations give faculty and administrators a clear, real-time overview of feedback trends and academic performance metrics.
 *   **Push Notifications:** Users receive timely alerts for new surveys, feedback status updates, and important academic announcements delivered via real-time push notifications.
+
+### 👨‍🎓 Student
+
+* Register a new account and log in securely
+* Submit categorized feedback for courses and instructors
+* Track the status of previously submitted feedback
+* Access in-app help and support resources
+* Subject to submission limits to maintain feedback integrity
