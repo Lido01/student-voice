@@ -49,3 +49,21 @@ Get the latest version of the app directly to your device.
 * Monitor aggregated ratings and performance metrics
 * Manage user accounts, course records, and instructor profiles
 * Access detailed analytics reports and exportable data summaries
+
+---
+
+## 📂 Folder Structure
+
+```text
+mobile/
+ ┣ App.js                  # Application entry point
+ ┣ src/
+ ┃ ┣ api/                  # HTTP helpers and backend API client configuration
+ ┃ ┣ components/           # Reusable shared UI components
+ ┃ ┣ navigation/           # React Navigation stack and tab navigator setup
+ ┃ ┗ screens/              # Feature-specific screen components (Student, Admin, etc.)
+
+backend/
+ ┣ apps/                   # Django apps: authentication, feedback, notifications, departments
+ ┗ config/                 # Project-wide settings, environment configs, and URL routing
+```
