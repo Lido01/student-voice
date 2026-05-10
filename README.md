@@ -129,3 +129,9 @@ Scan the QR code with the **Expo Go** app on your device, or run on an emulator 
 ## 🤝 Contributing
 
 Contributions are welcome. Please open an issue first to discuss proposed changes, then submit a pull request against the `main` branch. Ensure your code follows the existing structure and is adequately documented.
+
+---
+
+## 📄 License
+
+This project is currently unlicensed. All rights reserved by the authors unless otherwise stated.
