@@ -123,3 +123,9 @@ npx expo start
 ```
 
 Scan the QR code with the **Expo Go** app on your device, or run on an emulator using `npx expo run:android`.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome. Please open an issue first to discuss proposed changes, then submit a pull request against the `main` branch. Ensure your code follows the existing structure and is adequately documented.
