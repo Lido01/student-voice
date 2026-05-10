@@ -93,3 +93,24 @@ backend/
 git clone https://github.com/Lido01/eval-campus
 cd eval-campus
 ```
+
+### 2. Backend Setup
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate        # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Configure your environment variables by creating a `.env` file in the `backend/` directory:
+```env
+SECRET_KEY=your_django_secret_key
+DEBUG=True
+DATABASE_URL=your_postgresql_connection_string
+```
+
+Apply migrations and start the development server:
+```bash
+python manage.py migrate
+python manage.py runserver
+```
