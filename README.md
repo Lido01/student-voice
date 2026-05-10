@@ -134,4 +134,4 @@ Contributions are welcome. Please open an issue first to discuss proposed change
 
 ## 📄 License
 
-This project is currently unlicensed. All rights reserved by the authors unless otherwise stated.
+This project is currently unlicensed. All rights reserved by the authors unless otherwise stated. 
