@@ -67,3 +67,12 @@ backend/
  ┣ apps/                   # Django apps: authentication, feedback, notifications, departments
  ┗ config/                 # Project-wide settings, environment configs, and URL routing
 ```
+
+---
+
+## 🚀 Tech Stack
+
+### Mobile Frontend
+*   **Framework:** React Native (cross-platform iOS & Android)
+*   **Styling:** Inline StyleSheet API for component-scoped styling
+*   **State Management:** Redux Toolkit for global state; Context API for lightweight local state
