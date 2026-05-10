@@ -40,3 +40,12 @@ Get the latest version of the app directly to your device.
 * Filter feedback entries by course, date, or status
 * Post official responses to student submissions
 * Manage course listings and update feedback statuses
+
+### 👨‍💼 Admin
+
+* Access a full-featured administrative dashboard
+* View and manage all feedback across the institution
+* Filter submissions by course, instructor, or department
+* Monitor aggregated ratings and performance metrics
+* Manage user accounts, course records, and instructor profiles
+* Access detailed analytics reports and exportable data summaries
