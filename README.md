@@ -32,3 +32,11 @@ Get the latest version of the app directly to your device.
 * Track the status of previously submitted feedback
 * Access in-app help and support resources
 * Subject to submission limits to maintain feedback integrity
+
+### 🏫 Department / Student Affairs
+
+* Access a dedicated login dashboard
+* View and manage all incoming student feedback
+* Filter feedback entries by course, date, or status
+* Post official responses to student submissions
+* Manage course listings and update feedback statuses
