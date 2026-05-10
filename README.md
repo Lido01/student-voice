@@ -76,3 +76,10 @@ backend/
 *   **Framework:** React Native (cross-platform iOS & Android)
 *   **Styling:** Inline StyleSheet API for component-scoped styling
 *   **State Management:** Redux Toolkit for global state; Context API for lightweight local state
+
+### Backend & AI Services
+*   **Core Framework:** Django & Django REST Framework (DRF) for RESTful API development
+*   **Real-Time Communication:** WebSockets via Django Channels for live feedback and notification delivery
+*   **AI & Biometrics Engine:** InsightFace & ONNX Runtime for efficient, on-server face detection and identity verification
+*   **Database:** PostgreSQL — hosted and managed on Render
+*   **Application Server:** Gunicorn with WhiteNoise for static file serving in production
