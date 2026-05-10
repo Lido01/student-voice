@@ -114,3 +114,12 @@ Apply migrations and start the development server:
 python manage.py migrate
 python manage.py runserver
 ```
+
+### 3. Mobile Frontend Setup
+```bash
+cd mobile
+npm install
+npx expo start
+```
+
+Scan the QR code with the **Expo Go** app on your device, or run on an emulator using `npx expo run:android`.
