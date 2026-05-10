@@ -83,3 +83,13 @@ backend/
 *   **AI & Biometrics Engine:** InsightFace & ONNX Runtime for efficient, on-server face detection and identity verification
 *   **Database:** PostgreSQL — hosted and managed on Render
 *   **Application Server:** Gunicorn with WhiteNoise for static file serving in production
+
+---
+
+## 🛠️ Developer Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Lido01/eval-campus
+cd eval-campus
+```
