@@ -1,3 +1,4 @@
+// Central API client helpers used by screens to talk to the Student Voice backend.
 import { Platform } from 'react-native';
 
 const DEFAULT_BASE_URL = Platform.select({
