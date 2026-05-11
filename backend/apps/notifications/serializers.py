@@ -1,3 +1,4 @@
+"""Serializers that shape notification records for mobile and admin clients."""
 from rest_framework import serializers
 from .models import Notification
 
