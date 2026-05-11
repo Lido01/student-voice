@@ -1,3 +1,4 @@
+"""Account models that define project users and their role-based access details."""
 # AbstractUser provides the full default Django user implementation
 # (username, email, password, first_name, last_name, is_staff, is_active, etc.)
 # Subclassing it lets us add custom fields while keeping all built-in auth behaviour
