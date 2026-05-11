@@ -1,3 +1,4 @@
+// Shared screen layout wrapper that keeps navigation and page chrome consistent.
 import React from 'react';
 import { View, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
