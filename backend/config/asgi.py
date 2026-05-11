@@ -1,3 +1,4 @@
+"""ASGI application loader used when the backend is served by an asynchronous server."""
 """
 ASGI config for config project.
 
