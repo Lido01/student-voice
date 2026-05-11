@@ -1,3 +1,4 @@
+"""Command-line entry point for running Django management tasks in this project."""
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
