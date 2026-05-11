@@ -1,3 +1,4 @@
+"""Django settings for the Student Voice backend, including apps, database, auth, and API configuration."""
 """
 Django settings for config project.
 
