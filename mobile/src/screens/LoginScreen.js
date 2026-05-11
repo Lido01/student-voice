@@ -1,3 +1,4 @@
+// Login screen that authenticates users and restores remembered account details.
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
