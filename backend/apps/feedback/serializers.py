@@ -1,3 +1,4 @@
+"""Serializers that validate feedback payloads and format feedback API responses."""
 from rest_framework import serializers
 from .models import Feedback
 
