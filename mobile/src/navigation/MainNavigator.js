@@ -1,3 +1,4 @@
+// Main stack navigator that maps authenticated users into the app screens.
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Layout from '../components/Layout';
