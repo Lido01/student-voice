@@ -1,3 +1,4 @@
+"""Account API views for authentication-related and user-management requests."""
 # DRF generic views provide pre-built CRUD patterns (ListAPIView, CreateAPIView, etc.)
 # status contains HTTP status code constants (e.g. status.HTTP_201_CREATED)
 # permissions is the base module for writing custom permission classes
