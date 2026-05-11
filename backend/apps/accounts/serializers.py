@@ -1,3 +1,4 @@
+"""Serializers that validate account data and shape user responses for the API."""
 # Import the User model defined in the local models.py
 from .models import User
 
