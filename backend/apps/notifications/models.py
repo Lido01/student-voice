@@ -1,3 +1,4 @@
+"""Notification models that capture alerts sent to users about feedback activity."""
 from django.db import models
 from django.conf import settings
 
