@@ -1,3 +1,4 @@
+"""URL routes that expose feedback features through the backend API."""
 from django.urls import path
 from .views import FeedbackViewSet
 from rest_framework_simplejwt.views import (
