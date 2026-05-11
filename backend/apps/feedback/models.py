@@ -1,3 +1,4 @@
+"""Feedback models that store student submissions, status, category, and routing details."""
 from django.db import models
 from django.conf import settings
 
