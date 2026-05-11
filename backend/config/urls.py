@@ -1,3 +1,4 @@
+"""Root URL configuration that connects each app API route to the Django project."""
 """
 URL configuration for config project.
 
