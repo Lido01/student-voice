@@ -1,3 +1,4 @@
+"""Service helpers for building notification messages from feedback events."""
 from .models import Notification
 from django.db.models import QuerySet
 from django.db import transaction
