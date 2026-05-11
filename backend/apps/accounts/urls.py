@@ -1,3 +1,4 @@
+"""URL routes for account endpoints such as login, registration, and user actions."""
 from django.urls import path
 from .views import RegisterView, UserListView, CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
