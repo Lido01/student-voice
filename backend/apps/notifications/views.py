@@ -1,3 +1,4 @@
+"""Notification API views for listing and updating user alerts."""
 from rest_framework import viewsets, permissions
 from .models import Notification
 from .serializers import NotificationSerializer

@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, 
   Modal, ScrollView, Image, ActivityIndicator 
 } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { getFeedbacks } from '../../../api/api';
 
 const FeedbackListScreen = ({ token, user }) => {
@@ -13,21 +13,25 @@ const FeedbackListScreen = ({ token, user }) => {
 
   useEffect(() => {
     fetchMyFeedback();
-  }, []);
+  }, [token]);
 
   const fetchMyFeedback = async () => {
     setLoading(true);
-    const res = await getFeedbacks(token);
-    if (res.status === 200) {
-      setFeedbacks(res.data);
+    try {
+      const res = await getFeedbacks(token);
+      if (res.status === 200) {
+        setFeedbacks(Array.isArray(res.data) ? res.data : []);
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const getStatusStyle = (status) => {
     switch (status?.toLowerCase()) {
       case 'resolved': return { bg: '#e1f7ec', text: '#2ecc71', icon: 'check-circle' };
       case 'pending': return { bg: '#fff4e5', text: '#f39c12', icon: 'clock' };
+      case 'review': return { bg: '#eef2ff', text: '#4834d4', icon: 'alert-circle' };
       default: return { bg: '#f1f2f6', text: '#747d8c', icon: 'info' };
     }
   };
@@ -120,6 +124,8 @@ const FeedbackListScreen = ({ token, user }) => {
   );
 };
 
+FeedbackListScreen.displayName = 'FeedbackListScreen';
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f8fa' },
   card: { 
@@ -159,3 +165,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackListScreen;
+FeedbackListScreen.displayName = 'FeedbackListScreen';

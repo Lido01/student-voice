@@ -1,3 +1,4 @@
+"""Feedback models that store student submissions, status, category, and routing details."""
 from django.db import models
 from django.conf import settings
 
@@ -40,6 +41,9 @@ class Feedback(models.Model):
             models.Index(fields=['category']),
             models.Index(fields=['created_at']),
         ]
+
+        verbose_name = "Feedback"
+        verbose_name_plural = "Feedbacks"
 
     def __str__(self):
         return f"{self.subject} ({self.category})"

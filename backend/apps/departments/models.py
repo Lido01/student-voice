@@ -1,3 +1,4 @@
+"""Department models that represent the offices or units receiving student feedback."""
 from django.db import models
 
 # Create your models here.

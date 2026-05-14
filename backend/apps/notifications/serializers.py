@@ -1,3 +1,4 @@
+"""Serializers that shape notification records for mobile and admin clients."""
 from rest_framework import serializers
 from .models import Notification
 
@@ -12,3 +13,5 @@ class NotificationSerializer(serializers.ModelSerializer):
 		extra_kwargs = {
 			'is_read': {'required': False},
 		}
+
+NotificationSerializer.__name__ = 'NotificationSerializer'

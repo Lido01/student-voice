@@ -1,3 +1,4 @@
+"""Serializers that validate and present department data for API consumers."""
 from rest_framework import serializers
 from .models import Department
 

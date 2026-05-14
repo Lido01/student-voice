@@ -25,11 +25,11 @@ const FeedbackScreen = ({ navigation, token, user }) => {
 
   useEffect(() => {
     if (isStudent && token) fetchHistory();
-  }, [token]);
+  }, [isStudent, token]);
 
   const fetchHistory = async () => {
     const res = await getFeedbacks(token);
-    if (res.status === 200) setFeedbacks(res.data);
+    if (res.status === 200) setFeedbacks(Array.isArray(res.data) ? res.data : []);
   };
 
   const pickImage = async () => {
@@ -55,30 +55,35 @@ const FeedbackScreen = ({ navigation, token, user }) => {
     }
 
     setSubmitting(true);
-    const formData = new FormData();
-    formData.append('subject', form.subject);
-    formData.append('description', form.description);
-    formData.append('category', form.category);
-    formData.append('target', form.target);
-    formData.append('anonymous', String(form.anonymous));
+    try {
+      const formData = new FormData();
+      formData.append('subject', form.subject);
+      formData.append('description', form.description);
+      formData.append('category', form.category);
+      formData.append('target', form.target);
+      formData.append('anonymous', String(form.anonymous));
 
-    if (image) {
-      const filename = image.split('/').pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : `image`;
-      formData.append('image', { uri: image, name: filename, type });
-    }
+      if (image) {
+        const filename = image.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+        formData.append('image', { uri: image, name: filename, type });
+      }
 
-    const res = await submitFeedback(token, formData);
-    setSubmitting(false);
+      const res = await submitFeedback(token, formData);
 
-    if (res.id || res.status === 201) {
-      Alert.alert('Success', 'Your feedback has been sent.');
-      setForm({ ...form, subject: '', description: '', anonymous: false });
-      setImage(null);
-      fetchHistory();
-    } else {
-      Alert.alert('Error', res.detail || 'Failed to submit.');
+      if (res.id || res.status === 201) {
+        Alert.alert('Success', 'Your feedback has been sent.');
+        setForm({ ...form, subject: '', description: '', anonymous: false });
+        setImage(null);
+        fetchHistory();
+      } else {
+        Alert.alert('Error', res.detail || 'Failed to submit.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not submit feedback.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -96,6 +101,8 @@ const FeedbackScreen = ({ navigation, token, user }) => {
               placeholder="What is this about?" 
               value={form.subject} 
               onChangeText={(v) => setForm({...form, subject: v})}
+              autoCapitalize="sentences"
+              autoCorrect={false}
             />
 
             <View style={styles.pickerLabel}><Text style={styles.labelText}>Category</Text></View>
@@ -127,6 +134,7 @@ const FeedbackScreen = ({ navigation, token, user }) => {
               multiline 
               value={form.description}
               onChangeText={(v) => setForm({...form, description: v})}
+              autoCapitalize="sentences"
             />
 
             <View style={styles.row}>
@@ -224,3 +232,4 @@ const styles = StyleSheet.create({
 });
 
 export default FeedbackScreen;
+FeedbackScreen.displayName = 'FeedbackScreen';
