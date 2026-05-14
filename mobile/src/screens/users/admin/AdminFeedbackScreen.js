@@ -15,7 +15,7 @@ const AdminFeedbackScreen = ({ token, user }) => {
 
   useEffect(() => {
     fetchIncomingFeedback();
-  }, []);
+  }, [token, user]);
 
   const fetchIncomingFeedback = async () => {
     setLoading(true);
@@ -24,9 +24,10 @@ const AdminFeedbackScreen = ({ token, user }) => {
       if (res.status === 200) {
         // Filter based on role (Admins see everything)
         const userRole = user?.role?.toLowerCase();
+        const allFeedback = Array.isArray(res.data) ? res.data : [];
         const filtered = userRole === 'admin' 
-          ? res.data 
-          : res.data.filter(item => item.target === userRole);
+          ? allFeedback 
+          : allFeedback.filter(item => item.target === userRole);
         setFeedbacks(filtered);
       }
     } catch (err) {
@@ -37,6 +38,10 @@ const AdminFeedbackScreen = ({ token, user }) => {
   };
 
   const handleStatusChange = async (newStatus) => {
+    if (!selectedItem) {
+      return;
+    }
+
     setUpdating(true);
     try {
       // Build payload based on backend requirements
@@ -56,23 +61,6 @@ const AdminFeedbackScreen = ({ token, user }) => {
       setUpdating(false);
     }
   };
-
-  const handleResolve = async () => {
-  const payload = {
-    status: 'resolved',
-    admin_response: responseMsg // Make sure this matches your Django field name
-  };
-
-  const res = await updateFeedbackStatus(token, selectedItem.id, payload);
-
-  if (res.status === 200) {
-    Alert.alert("Success", "Student has been notified of the resolution.");
-    fetchIncomingFeedback(); // Refresh the list
-    setSelectedItem(null);   // Close modal
-  } else {
-    Alert.alert("Error", res.detail || "Failed to update status");
-  }
-};
 
   const confirmDelete = (id) => {
     Alert.alert(
@@ -112,6 +100,8 @@ const AdminFeedbackScreen = ({ token, user }) => {
       <Text numberOfLines={2} style={styles.desc}>{item.description}</Text>
     </TouchableOpacity>
   );
+
+AdminFeedbackScreen.displayName = 'AdminFeedbackScreen';
 
   return (
     <View style={styles.container}>
@@ -208,3 +198,4 @@ const styles = StyleSheet.create({
 });
 
 export default AdminFeedbackScreen;
+AdminFeedbackScreen.displayName = 'AdminFeedbackScreen';

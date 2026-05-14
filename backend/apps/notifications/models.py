@@ -1,3 +1,4 @@
+"""Notification models that capture alerts sent to users about feedback activity."""
 from django.db import models
 from django.conf import settings
 
@@ -20,3 +21,6 @@ class Notification(models.Model):
             models.Index(fields=['user', 'is_read']),
             models.Index(fields=['created_at']),
         ]
+
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"

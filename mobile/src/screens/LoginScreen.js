@@ -1,3 +1,4 @@
+// Login screen that authenticates users and restores remembered account details.
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
@@ -10,7 +11,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../api/api';
-import MainNavigator from '../navigation/MainNavigator';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -25,6 +25,7 @@ export default function LoginScreen({ navigation }) {
 
   useEffect(() => {
     loadRecentUsers();
+    loadRememberedLogin();
   }, []);
 
   const loadRecentUsers = async () => {
@@ -38,37 +39,70 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
-const handleLogin = async () => {
-  setLoading(true);
-  setError('');
-  try {
-    const result = await login(username, password);
-    
-    if (result.status === 200 && result.access) {
-      
-      // ... your existing Remember Me logic ...
+  const loadRememberedLogin = async () => {
+    try {
+      const savedRememberMe = await AsyncStorage.getItem('rememberMe');
+      const savedUsername = await AsyncStorage.getItem('rememberedUsername');
 
-      // SUCCESSFUL FIX: Target the Main stack and pass screen name as a sub-param
-      navigation.replace('MainNavigator', { 
-        token: result.access,
-        user: {
-          username: result.username,
-          fullname: result.fullname,
-          role: result.role
-        },
-        // This tells the nested stack which screen to show first
-        screen: 'Dashboard' 
-      });
+      if (savedRememberMe === 'true') {
+        setRememberMe(true);
+      }
 
-    } else {
-      setError(result.detail || 'Invalid credentials');
+      if (savedUsername) {
+        setUsername(savedUsername);
+      }
+    } catch (e) {
+      console.error('Failed to load remembered login');
     }
-  } catch (e) {
-    setError('Could not connect to server.');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
+
+  const saveRecentUser = async (value) => {
+    const normalized = value.trim();
+    if (!normalized) {
+      return;
+    }
+
+    const nextUsers = [normalized, ...recentUsers.filter((item) => item !== normalized)].slice(0, 5);
+    setRecentUsers(nextUsers);
+    await AsyncStorage.setItem('recentUsers', JSON.stringify(nextUsers));
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const result = await login(username, password);
+
+      if (result.status === 200 && result.access) {
+        await saveRecentUser(username);
+
+        if (rememberMe) {
+          await AsyncStorage.setItem('rememberMe', 'true');
+          await AsyncStorage.setItem('rememberedUsername', username);
+        } else {
+          await AsyncStorage.multiRemove(['rememberMe', 'rememberedUsername']);
+        }
+
+        navigation.replace('MainNavigator', { 
+          token: result.access,
+          user: {
+            username: result.username,
+            fullname: result.fullname,
+            role: result.role,
+            email: result.email,
+            user_id: result.user_id,
+          },
+          screen: 'Dashboard' 
+        });
+      } else {
+        setError(result.detail || 'Invalid credentials');
+      }
+    } catch (e) {
+      setError('Could not connect to server.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const selectSuggestedUser = (user) => {
@@ -104,6 +138,7 @@ const handleLogin = async () => {
         onChangeText={setUsername}
         style={styles.input}
         autoCapitalize="none"
+        autoCorrect={false}
       />
 
       {/* Password Input with Visibility Toggle */}
@@ -114,6 +149,7 @@ const handleLogin = async () => {
           value={password}
           onChangeText={setPassword}
           style={[styles.input, { marginBottom: 0, flex: 1, borderWidth: 0 }]}
+          autoCorrect={false}
         />
         <TouchableOpacity 
           onPress={() => setIsPasswordVisible(!isPasswordVisible)}
@@ -144,6 +180,8 @@ const handleLogin = async () => {
     </View>
   );
 }
+
+LoginScreen.displayName = 'LoginScreen';
 
 const styles = StyleSheet.create({
   container: {

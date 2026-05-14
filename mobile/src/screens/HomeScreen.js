@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation, route }) => {
-  // You can use route.params.token for authenticated requests
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard</Text>
       <Text style={styles.subtitle}>Welcome to the Feedback Evaluation System!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })}
+      >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -51,3 +53,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+HomeScreen.displayName = 'HomeScreen';

@@ -24,7 +24,7 @@ const HelpScreen = () => {
     },
     {
       question: "How long does a response take?",
-      author: "Responses typically take 3-5 business days depending on the complexity of the issue and the department's current workload."
+      answer: "Responses typically take 3-5 business days depending on the complexity of the issue and the department's current workload."
     },
     {
       question: "Can I edit a submitted feedback?",
@@ -46,7 +46,7 @@ const HelpScreen = () => {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* App Mission Section */}
       <View style={styles.missionCard}>
-        <MaterialCommunityIcons name=" megaphone-variant-outline" size={40} color="#fff" />
+        <MaterialCommunityIcons name="megaphone-variant-outline" size={40} color="#fff" />
         <Text style={styles.missionTitle}>Our Mission</Text>
         <Text style={styles.missionDesc}>
           Empowering students by providing a transparent, efficient, and accountable 
@@ -73,7 +73,7 @@ const HelpScreen = () => {
               />
             </View>
             {expandedIndex === index && (
-              <Text style={styles.faqAnswer}>{item.answer || item.author}</Text>
+              <Text style={styles.faqAnswer}>{item.answer}</Text>
             )}
           </TouchableOpacity>
         ))}
@@ -149,3 +149,4 @@ const styles = StyleSheet.create({
 });
 
 export default HelpScreen;
+HelpScreen.displayName = 'HelpScreen';

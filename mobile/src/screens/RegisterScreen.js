@@ -17,15 +17,27 @@ const RegisterScreen = ({ navigation }) => {
   const handleChange = (name, value) => setForm({ ...form, [name]: value });
 
   const handleRegister = async () => {
+    if (form.password !== form.password2) {
+      Alert.alert('Validation Error', 'Passwords do not match.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await register(form);
-      const data = await response.json();
-      if (response.ok) {
+      const payload = {
+        ...form,
+        username: form.username.trim(),
+        email: form.email.trim(),
+        role: form.role.trim().toLowerCase() || 'student',
+        user_id: form.user_id.trim(),
+      };
+
+      const result = await register(payload);
+      if (result.status === 201) {
         Alert.alert('Success', 'Registration successful!');
         navigation.replace('Login');
       } else {
-        Alert.alert('Registration Failed', JSON.stringify(data));
+        Alert.alert('Registration Failed', JSON.stringify(result));
       }
     } catch (e) {
       Alert.alert('Error', 'Could not connect to server.');
@@ -37,10 +49,10 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Create Account</Text>
-      <TextInput style={styles.input} placeholder="Username" value={form.username} onChangeText={v => handleChange('username', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Email" value={form.email} onChangeText={v => handleChange('email', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="User ID" value={form.user_id} onChangeText={v => handleChange('user_id', v)} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Role (student, admin, department, student_affairs)" value={form.role} onChangeText={v => handleChange('role', v)} autoCapitalize="none" />
+      <TextInput style={styles.input} placeholder="Username" value={form.username} onChangeText={v => handleChange('username', v)} autoCapitalize="none" autoCorrect={false} />
+      <TextInput style={styles.input} placeholder="Email" value={form.email} onChangeText={v => handleChange('email', v)} autoCapitalize="none" autoCorrect={false} keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="User ID" value={form.user_id} onChangeText={v => handleChange('user_id', v)} autoCapitalize="none" autoCorrect={false} />
+      <TextInput style={styles.input} placeholder="Role (student, admin, department, student_affairs)" value={form.role} onChangeText={v => handleChange('role', v)} autoCapitalize="none" autoCorrect={false} />
       <TextInput style={styles.input} placeholder="Password" value={form.password} onChangeText={v => handleChange('password', v)} secureTextEntry />
       <TextInput style={styles.input} placeholder="Confirm Password" value={form.password2} onChangeText={v => handleChange('password2', v)} secureTextEntry />
       <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
@@ -100,3 +112,4 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
+RegisterScreen.displayName = 'RegisterScreen';

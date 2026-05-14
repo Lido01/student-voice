@@ -1,3 +1,4 @@
+"""Service helpers for feedback workflows that should stay outside view classes."""
 from .models import Feedback
 from django.db.models import QuerySet
 from django.db import transaction

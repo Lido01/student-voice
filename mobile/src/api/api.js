@@ -1,5 +1,14 @@
-// IMPORTANT: Set this to your computer's LAN IP
-const BASE_URL = 'http://YOUR_PC_IP:8000/api';
+// Central API client helpers used by screens to talk to the Student Voice backend.
+import { Platform } from 'react-native';
+
+const DEFAULT_BASE_URL = Platform.select({
+  android: 'http://10.0.2.2:8000/api',
+  ios: 'http://localhost:8000/api',
+  default: 'http://localhost:8000/api',
+});
+
+// Allow local development without editing source, while still supporting device testing.
+const BASE_URL = String(process.env.EXPO_PUBLIC_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
 
 /**
  * Helper to handle fetch responses and ensure status is included
@@ -9,7 +18,11 @@ async function handleResponse(response) {
     const data = await response.json();
     return { status: response.status, ...(Array.isArray(data) ? { data } : data) };
   } catch (e) {
-    return { status: response.status, detail: "JSON parse error" };
+    const text = await response.text().catch(() => '');
+    return {
+      status: response.status,
+      detail: text || 'Unexpected response from server',
+    };
   }
 }
 
@@ -111,3 +124,5 @@ export async function getUsers(token, role) {
   });
   return handleResponse(response);
 }
+
+export const apiBaseUrl = BASE_URL;
