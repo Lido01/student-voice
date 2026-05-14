@@ -1,4 +1,3 @@
-# StudentVoice 🎓
 
 A modern, cross-platform mobile application built with **React Native** designed to streamline student feedback and academic evaluations. **StudentVoice** bridges the gap between students and educators, providing a transparent and efficient way to improve the learning experience.
 
@@ -67,8 +66,3 @@ Contributions are welcome! Please follow these steps:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-# StudentVoice 🎓
-# StudentVoice 🎓
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-# StudentVoice 🎓
