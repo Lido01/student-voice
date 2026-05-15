@@ -1,68 +1,92 @@
+# StudentVoice 🎓
+**Modernizing Academic Evaluations With Real-Time Connectivity**
 
 A modern, cross-platform mobile application built with **React Native** designed to streamline student feedback and academic evaluations. **StudentVoice** bridges the gap between students and educators, providing a transparent and efficient way to improve the learning experience.
 
-## 📱 Features
+---
 
-- **Real-time Evaluations:** Submit feedback on courses and instructors instantly.
-- **Anonymous Reporting:** Secure and private feedback channels to ensure honest student input.
-- **Interactive Dashboards:** Visual representation of evaluation data for faculty.
-- **Push Notifications:** Reminders for pending surveys and academic updates.
-- **Offline Support:** Draft feedback offline and sync once connected.
+## 📥 Download & Install (Android)
 
-## 🚀 Tech Stack
+Get the latest version of the app directly to your device.
 
-- **Framework:** React Native
-- **State Management:** Redux Toolkit / Context API
-- **Navigation:** React Navigation
-- **Backend:** [Mention your backend here, e.g., Firebase / Node.js]
-- **Database:** [Mention your database here, e.g., PostgreSQL / MongoDB]
+| Platform | Download Link | Version | Build Status |
+| :--- | :--- | :--- | :--- |
+| **Android** | [**Download StudentVoice APK**](https://expo.dev/artifacts/eas/iS3meWC59ffWs8c8X3jqqr.apk) | `v1.0.0-preview` | ![Live](https://img.shields.io/badge/Status-Live-success) |
 
-## 🛠️ Installation
+> **Installation Tip:** As this is a direct APK, you may need to enable **"Install from Unknown Sources"** in your device's security settings.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com
-   cd student-voice
-   ```
+---
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+## 📱 Core Features
 
-3. **Install iOS CocoaPods (macOS only):**
-   ```bash
-   cd ios && pod install && cd ..
-   ```
+*   **Real-time Evaluations:** Instantly submit feedback on courses and instructors.
+*   **Biometric Integrity:** Integrated face-detection logic for secure attendance and verification.
+*   **Anonymous Reporting:** End-to-end privacy ensures honest student input without fear of reprisal.
+*   **Intuitive Dashboards:** Beautiful, dark-mode optimized data visualizations for faculty.
+*   **Push Notifications:** Stay updated with real-time academic alerts and survey reminders.
 
-4. **Run the application:**
-   - **Android:** `npx react-native run-android`
-   - **iOS:** `npx react-native run-ios`
+### 👨‍🎓 Student
+
+* Register and login
+* Submit feedback with categories
+* Track their status
+* Get a help
+* Restriction: limited feedback submission
+
+### 👨‍🎓 Department/Student_Affairs
+
+* Login dashboard
+* View all feedback
+* Filter by course
+* Give feedback responses
+* Manage courses, changes the status
+
+### 👨‍💼 Admin
+
+* Login dashboard
+* View all feedback
+* Filter by course or instructor
+* View average ratings
+* Manage users, courses, and instructors
+* View Analytics and Reports
+
+---
 
 ## 📂 Folder Structure
 
 ```text
-src/
- ┣ assets/       # Images, fonts, and static files
- ┣ components/   # Reusable UI components
- ┣ navigation/   # Stack and Tab navigators
- ┣ screens/      # Main application screens
- ┣ services/     # API calls and external integrations
- ┣ store/        # State management logic
- ┗ utils/        # Helper functions and constants
+mobile/
+ ┣ App.js
+ ┣ src/
+ ┃ ┣ api/         # HTTP helpers and backend client
+ ┃ ┣ components/  # Shared UI wrappers
+ ┃ ┣ navigation/  # Navigator setup
+ ┃ ┗ screens/     # Feature screens
+backend/
+ ┣ apps/          # Django apps for auth, feedback, notifications, departments
+ ┗ config/        # Project settings and URL routing
 ```
 
-## 🤝 Contributing
+## 🚀 Tech Stack
 
-Contributions are welcome! Please follow these steps:
-1. Fork the project.
-2. Create your feature branch (`git checkout -b feature/NewFeature`).
-3. Commit your changes (`git commit -m 'Add some NewFeature'`).
-4. Push to the branch (`git push origin feature/NewFeature`).
-5. Open a Pull Request.
+### Mobile Frontend
+*   **Framework:** React Native
+*   **Styling:** CSS inline styling.
+*   **State Management:** Redux Toolkit & Context API.
 
-## 📄 License
+### AI Agent Backend
+*   **Core:** Django & Django REST Framework (DRF).
+*   **Real-time Logic:** WebSockets via Django Channels.
+*   **AI Engine:** InsightFace & ONNX Runtime for biometric processing.
+*   **Database:** PostgreSQL (Deployed on Render).
+*   **Server:** Gunicorn with WhiteNoise for static file management.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
+
+## 🛠️ Developer Setup
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/Lido01/eval-campus](https://github.com/Lido01/eval-campus)
+cd eval-campus
+
