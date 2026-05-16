@@ -97,7 +97,7 @@ backend/
 | Contributor | Role | GitHub/Contact |
 | :--- | :--- | :--- |
 | **Lidetu Tesfaye** | Full-Stack Developer (Backend & API) | [@Lido01](https://github.com/Lido01) |
-| **Dagimaw Wondewosen** | UI/UX Designer / Frontend Developer | [@dreykov69](https://github.com/dreykov69) |
+| **Dagimaw Wondewosen** | UI/UX Designer / project coordination and documentation | [@dreykov69](https://github.com/dreykov69) |
 | **Amanuel Getachew** | Cyber Enthusist / Tester | [@amanuelgmn](https://github.com/amanuelgmn) |
 | **Firomisa Tesfaye** | SRS / Documentation | [@firo-t](https://github.com/firo-t) |
 | **Meklit Mengistu** | UI/UX Designer / Project Manager | [@username](https://github.com/username) |
