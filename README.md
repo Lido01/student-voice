@@ -74,10 +74,9 @@ backend/
 *   **Styling:** CSS inline styling.
 *   **State Management:** Redux Toolkit & Context API.
 
-### AI Agent Backend
+### Backend
 *   **Core:** Django & Django REST Framework (DRF).
 *   **Real-time Logic:** WebSockets via Django Channels.
-*   **AI Engine:** InsightFace & ONNX Runtime for biometric processing.
 *   **Database:** PostgreSQL (Deployed on Render).
 *   **Server:** Gunicorn with WhiteNoise for static file management.
 
