@@ -11,7 +11,7 @@ Get the latest version of the app directly to your device.
 
 | Platform | Download Link | Version | Build Status |
 | :--- | :--- | :--- | :--- |
-| **Android** | [**Download StudentVoice APK**](https://expo.dev/artifacts/eas/iS3meWC59ffWs8c8X3jqqr.apk) | `v1.0.0-preview` | ![Live](https://img.shields.io/badge/Status-Live-success) |
+| **Android** | [**Download StudentVoice APK**](https://expo.dev/artifacts/eas/xzpDLZfvFQoEFJaFEL37r4.apk) | `v1.0.0-preview` | ![Live](https://img.shields.io/badge/Status-Live-success) |
 
 > **Installation Tip:** As this is a direct APK, you may need to enable **"Install from Unknown Sources"** in your device's security settings.
 
