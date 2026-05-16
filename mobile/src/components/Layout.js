@@ -3,8 +3,12 @@ import React from 'react';
 import { View, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import Navbar from '../screens/Navbar';
+import { useTheme } from '../theme/ThemeContext';
 
 const Layout = ({ children, title, navigation, user, onNotificationPress }) => {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   const handleLogout = () => {
     const parent = navigation.getParent();
     if (parent) {
@@ -28,6 +32,7 @@ const Layout = ({ children, title, navigation, user, onNotificationPress }) => {
   return (
     // We use a View wrapper around SafeAreaView to ensure background color is consistent
     <View style={styles.externalWrapper}>
+      <StatusBar barStyle={theme.statusBar} backgroundColor={theme.surface} />
       <SafeAreaView style={styles.container}>
         <Navbar 
           title={title} 
@@ -45,22 +50,25 @@ const Layout = ({ children, title, navigation, user, onNotificationPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  externalWrapper: {
-    flex: 1,
-    backgroundColor: '#F7F9FC',
-    // Prevents content from jumping on Android due to status bar
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  container: { 
-    flex: 1, 
-  },
-  content: { 
-    flex: 1, 
-    width: '100%',          // Force full width
-    alignItems: 'stretch',   // Force children to stretch horizontally
-  }
-});
+const createStyles = (theme) =>
+  StyleSheet.create({
+    externalWrapper: {
+      flex: 1,
+      backgroundColor: theme.background,
+      // Prevents content from jumping on Android due to status bar
+      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    content: {
+      flex: 1,
+      width: '100%',          // Force full width
+      alignItems: 'stretch',   // Force children to stretch horizontally
+      backgroundColor: theme.background,
+    }
+  });
 
 export default Layout;
 Layout.displayName = 'Layout';

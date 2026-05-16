@@ -9,6 +9,7 @@ import UsersScreen from '../screens/users/admin/Users';
 import FeedbackListScreen from '../screens/users/student/FeedbackList';
 import HelpScreen from '../screens/HelpScreen';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 import AdminFeedbackScreen from '../screens/users/admin/AdminFeedbackScreen';
 
@@ -96,10 +97,7 @@ const MainNavigator = ({ route }) => {
       <Stack.Screen name="Settings">
         {(props) => (
           <Layout {...props} title="Settings" user={user}>
-            <PlaceholderScreen
-              {...props}
-              route={{ ...props.route, params: { title: 'Settings', description: 'Settings are not configured yet.' } }}
-            />
+            <SettingsScreen {...props} user={user} />
           </Layout>
         )}
       </Stack.Screen>

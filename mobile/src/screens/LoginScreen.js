@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../api/api';
+import { useTheme } from '../theme/ThemeContext';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -22,6 +23,8 @@ export default function LoginScreen({ navigation }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [recentUsers, setRecentUsers] = useState([]);
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   useEffect(() => {
     loadRecentUsers();
@@ -132,8 +135,10 @@ export default function LoginScreen({ navigation }) {
       )}
 
       {/* Username Input */}
+      <Text style={styles.inputLabel}>Username</Text>
       <TextInput
-        placeholder="Username"
+        placeholder="Enter your username"
+        placeholderTextColor={theme.mutedText}
         value={username}
         onChangeText={setUsername}
         style={styles.input}
@@ -142,9 +147,11 @@ export default function LoginScreen({ navigation }) {
       />
 
       {/* Password Input with Visibility Toggle */}
+      <Text style={styles.inputLabel}>Password</Text>
       <View style={styles.passwordWrapper}>
         <TextInput
-          placeholder="Password"
+          placeholder="Enter your password"
+          placeholderTextColor={theme.mutedText}
           secureTextEntry={!isPasswordVisible}
           value={password}
           onChangeText={setPassword}
@@ -183,113 +190,122 @@ export default function LoginScreen({ navigation }) {
 
 LoginScreen.displayName = 'LoginScreen';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f6fa',
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#273c75',
-    marginBottom: 20,
-  },
-  suggestionContainer: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  suggestionTitle: {
-    fontSize: 12,
-    color: '#7f8c8d',
-    marginBottom: 8,
-  },
-  chip: {
-    backgroundColor: '#dcdde1',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    marginRight: 8,
-  },
-  chipText: {
-    fontSize: 14,
-    color: '#2f3640',
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 20,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#dcdde1',
-  },
-  passwordWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#dcdde1',
-    marginBottom: 20,
-  },
-  eyeButton: {
-    padding: 10,
-    marginRight: 5,
-  },
-  eyeText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#487eb0',
-  },
-  rememberRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 25,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 2,
-    borderColor: '#487eb0',
-    borderRadius: 4,
-    marginRight: 10,
-  },
-  checkboxChecked: {
-    backgroundColor: '#487eb0',
-  },
-  rememberText: {
-    color: '#2f3640',
-    fontSize: 14,
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#487eb0',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  link: {
-    color: '#487eb0',
-    fontSize: 16,
-    marginTop: 10,
-  },
-  error: {
-    color: '#e84118',
-    marginBottom: 10,
-    fontSize: 16,
-  },
-});
+const createStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+      padding: 20,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: 'bold',
+      color: theme.primary,
+      marginBottom: 20,
+    },
+    suggestionContainer: {
+      width: '100%',
+      marginBottom: 20,
+    },
+    suggestionTitle: {
+      fontSize: 12,
+      color: theme.mutedText,
+      marginBottom: 8,
+    },
+    chip: {
+      backgroundColor: theme.surfaceAlt,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 20,
+      marginRight: 8,
+    },
+    chipText: {
+      fontSize: 14,
+      color: theme.text,
+    },
+    inputLabel: {
+      alignSelf: 'flex-start',
+      color: theme.text,
+      fontSize: 14,
+      fontWeight: '700',
+      marginBottom: 8,
+    },
+    input: {
+      width: '100%',
+      height: 50,
+      backgroundColor: theme.surface,
+      borderRadius: 10,
+      paddingHorizontal: 15,
+      marginBottom: 20,
+      fontSize: 16,
+      color: theme.text,
+      borderWidth: 1,
+      borderColor: theme.border,
+    },
+    passwordWrapper: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: theme.border,
+      marginBottom: 20,
+    },
+    eyeButton: {
+      padding: 10,
+      marginRight: 5,
+    },
+    eyeText: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: theme.primary,
+    },
+    rememberRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      marginBottom: 25,
+    },
+    checkbox: {
+      width: 20,
+      height: 20,
+      borderWidth: 2,
+      borderColor: theme.primary,
+      borderRadius: 4,
+      marginRight: 10,
+    },
+    checkboxChecked: {
+      backgroundColor: theme.primary,
+    },
+    rememberText: {
+      color: theme.text,
+      fontSize: 14,
+    },
+    button: {
+      width: '100%',
+      height: 50,
+      backgroundColor: theme.primary,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 15,
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    link: {
+      color: theme.primary,
+      fontSize: 16,
+      marginTop: 10,
+    },
+    error: {
+      color: theme.danger,
+      marginBottom: 10,
+      fontSize: 16,
+    },
+  });

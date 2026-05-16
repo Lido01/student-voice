@@ -5,12 +5,15 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { getFeedbacks } from '../../api/api';
+import { useTheme } from '../../theme/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
 const Dashboard = ({ navigation, token, user }) => {
   const [stats, setStats] = useState({ total: 0, pending: 0, resolved: 0 });
   const [loading, setLoading] = useState(true);
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   useEffect(() => {
     fetchStats();
@@ -106,13 +109,13 @@ const Dashboard = ({ navigation, token, user }) => {
           icon="bar-chart-2" 
           label="Analytics" 
           color="#6ab04c" 
-          onPress={() => {}} 
+          onPress={() => navigation.navigate('Analytics')}
         />
         <QuickAction 
           icon="settings" 
           label="Settings" 
           color="#535c68" 
-          onPress={() => {}} 
+          onPress={() => navigation.navigate('Settings')}
         />
       </View>
 
@@ -124,7 +127,7 @@ const Dashboard = ({ navigation, token, user }) => {
           <Text style={styles.statusTitle}>All Systems Operational</Text>
           <Text style={styles.statusSub}>Last updated: Just now</Text>
         </View>
-        <Feather name="chevron-right" size={20} color="#747d8c" style={{ marginLeft: 'auto' }} />
+        <Feather name="chevron-right" size={20} color={theme.mutedText} style={{ marginLeft: 'auto' }} />
       </TouchableOpacity>
       
       <View style={{ height: 40 }} />
@@ -134,79 +137,80 @@ const Dashboard = ({ navigation, token, user }) => {
 
 Dashboard.displayName = 'Dashboard';
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafd', padding: 20 },
-  header: { 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 25 
-  },
-  greeting: { fontSize: 14, color: '#747d8c', fontWeight: '500' },
-  userName: { fontSize: 22, fontWeight: '800', color: '#2f3542' },
-  roleBadge: { 
-    backgroundColor: '#dfe4ea', 
-    paddingHorizontal: 10, 
-    paddingVertical: 5, 
-    borderRadius: 8 
-  },
-  roleText: { fontSize: 10, fontWeight: 'bold', color: '#57606f' },
-  
-  // Stats
-  statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30 },
-  statCard: { 
-    width: (width - 60) / 3, 
-    padding: 15, 
-    borderRadius: 20, 
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10
-  },
-  statNumber: { fontSize: 20, fontWeight: 'bold', color: '#fff', marginTop: 10 },
-  statLabel: { fontSize: 10, color: '#fff', opacity: 0.8, marginTop: 2 },
+const createStyles = (theme) =>
+  StyleSheet.create({
+    container: { flex: 1, backgroundColor: theme.background, padding: 20 },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 10,
+      marginBottom: 25
+    },
+    greeting: { fontSize: 14, color: theme.mutedText, fontWeight: '500' },
+    userName: { fontSize: 22, fontWeight: '800', color: theme.text },
+    roleBadge: {
+      backgroundColor: theme.badge,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 8
+    },
+    roleText: { fontSize: 10, fontWeight: 'bold', color: theme.mutedText },
 
-  // Grid
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#2f3542', marginBottom: 15 },
-  actionGrid: { 
-    flexDirection: 'row', 
-    flexWrap: 'wrap', 
-    justifyContent: 'space-between' 
-  },
-  actionCard: { 
-    backgroundColor: '#fff', 
-    width: (width - 55) / 2, 
-    padding: 20, 
-    borderRadius: 20, 
-    alignItems: 'center',
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: '#f1f2f6'
-  },
-  iconCircle: { padding: 12, borderRadius: 15, marginBottom: 10 },
-  actionLabel: { fontSize: 14, fontWeight: '600', color: '#57606f' },
+    // Stats
+    statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30 },
+    statCard: {
+      width: (width - 60) / 3,
+      padding: 15,
+      borderRadius: 20,
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowRadius: 10
+    },
+    statNumber: { fontSize: 20, fontWeight: 'bold', color: '#fff', marginTop: 10 },
+    statLabel: { fontSize: 10, color: '#fff', opacity: 0.8, marginTop: 2 },
 
-  // Status Card
-  statusCard: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: '#fff', 
-    padding: 15, 
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#f1f2f6'
-  },
-  statusIndicator: { 
-    width: 10, 
-    height: 10, 
-    borderRadius: 5, 
-    backgroundColor: '#2ecc71', 
-    marginRight: 15 
-  },
-  statusTitle: { fontSize: 14, fontWeight: '700', color: '#2f3542' },
-  statusSub: { fontSize: 12, color: '#a4b0be' }
-});
+    // Grid
+    sectionTitle: { fontSize: 18, fontWeight: '700', color: theme.text, marginBottom: 15 },
+    actionGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    },
+    actionCard: {
+      backgroundColor: theme.surface,
+      width: (width - 55) / 2,
+      padding: 20,
+      borderRadius: 20,
+      alignItems: 'center',
+      marginBottom: 15,
+      borderWidth: 1,
+      borderColor: theme.cardBorder
+    },
+    iconCircle: { padding: 12, borderRadius: 15, marginBottom: 10 },
+    actionLabel: { fontSize: 14, fontWeight: '600', color: theme.mutedText },
+
+    // Status Card
+    statusCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      padding: 15,
+      borderRadius: 15,
+      borderWidth: 1,
+      borderColor: theme.cardBorder
+    },
+    statusIndicator: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      backgroundColor: '#2ecc71',
+      marginRight: 15
+    },
+    statusTitle: { fontSize: 14, fontWeight: '700', color: theme.text },
+    statusSub: { fontSize: 12, color: theme.mutedText }
+  });
 
 export default Dashboard;
 Dashboard.displayName = 'Dashboard';
