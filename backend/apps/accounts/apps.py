@@ -9,4 +9,7 @@ class AccountsConfig(AppConfig):
     verbose_name = "Accounts Management"
     
     def ready(self):
-        import apps.accounts.signals
+        try:
+            import apps.accounts.signals
+        except ModuleNotFoundError:
+            pass

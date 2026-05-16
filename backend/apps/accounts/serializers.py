@@ -32,7 +32,7 @@ class UserListSerializer(serializers.ModelSerializer):
     # 🔧 Safe enhancement: read-only protection for list API
     # Mirrors the fields tuple so that every field is treated as read-only,
     # preventing any accidental write operations through this serializer
-    read_only_fields = fields
+        read_only_fields = fields
 
 
 class RegisterSerializer(serializers.ModelSerializer):
