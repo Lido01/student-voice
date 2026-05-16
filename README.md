@@ -19,10 +19,10 @@ Get the latest version of the app directly to your device.
 
 | Role            | Username                    |    Password         |
 | --------------- | --------------------------  |  ----------         |
-| student         | lidetu@gmail.com            |  lidetu@123123      |
-| Admin           | admin@gail.com              |  admin@123123       |
-| Department      | department@astu.edu         |  department@123123  |
-| Student_Affairs | studentaffairs@astu.edu     |  affair@123123      |
+| student         | lidetu                      |   lidetu@123123     |
+| Admin           | admin                       |  admin@123123       |
+| Department      | department                  |  department@123123  |
+| Student_Affairs | studentaffairs              |  affair@123123      |
 
 ---
 
