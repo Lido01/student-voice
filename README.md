@@ -92,6 +92,17 @@ backend/
 
 ---
 
+## 👥 Contributors
+
+| Contributor | Role | GitHub/Contact |
+| :--- | :--- | :--- |
+| **Lidetu Tesfaye** | Full-Stack Developer (Backend & API) | [@Lido01](https://github.com/Lido01) |
+| **Dagimaw Wondewosen** | UI/UX Designer / Frontend Developer | [@dreykov69](https://github.com/dreykov69) |
+| **Amanuel Getachew** | Cyber Enthusist / Tester | [@amanuelgmn](https://github.com/amanuelgmn) |
+| **Firomisa Tesfaye** | SRS / Documentation | [@firo-t](https://github.com/firo-t) |
+| **Meklit Mengistu** | UI/UX Designer / Project Manager | [@username](https://github.com/username) |
+| **Eyuel Muhamud** | QA Tester / Documentation | [@Eyu7768-u](https://github.com/Eyu7768-u) |
+
 ## 🛠️ Developer Setup
 
 ### 1. Clone the Repository
